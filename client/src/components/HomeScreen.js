@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
 import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
+import Session from './Session'
 
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab'
@@ -55,6 +56,7 @@ const HomeScreen = () => {
                 }
                 <MUIDeleteModal />
             </div>
+            <Session/>
         </div>)
 }
 

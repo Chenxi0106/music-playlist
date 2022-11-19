@@ -11,6 +11,7 @@ import RedoIcon from '@mui/icons-material/Redo';
 import UndoIcon from '@mui/icons-material/Undo';
 import CloseIcon from '@mui/icons-material/HighlightOff';
 import Publish from '@mui/icons-material/Publish';
+import ContentCopy from '@mui/icons-material/ContentCopy';
 /*
     This toolbar is a functional React component that
     manages the undo/redo/close buttons.
@@ -44,13 +45,24 @@ function EditToolbar() {
     }
 
     //own code
-    function handlePublishList(){
-        store.currentList.publish=true;
+    function handlePublishList() {
+        store.currentList.publish = true;
         store.updateCurrentList();
     }
+    function handleCopyContent(){
+
+    }
+
     let value = null;
-    if(store.currentList){
+    if (store.currentList) {
         value = <div id="edit-toolbar">
+            <Button
+                color="inherit"
+                id='copy-list-button'
+                onClick={handleCopyContent}
+                variant="contained">
+                <ContentCopy />
+            </Button>
             <Button
                 color="inherit"
                 disabled={!store.canPublish()}
@@ -73,7 +85,7 @@ function EditToolbar() {
                 id='undo-button'
                 onClick={handleUndo}
                 variant="contained">
-                    <UndoIcon />
+                <UndoIcon />
             </Button>
             <Button
                 color="inherit"
@@ -81,45 +93,45 @@ function EditToolbar() {
                 id='redo-button'
                 onClick={handleRedo}
                 variant="contained">
-                    <RedoIcon />
+                <RedoIcon />
             </Button>
-            <Button 
+            <Button
                 color="inherit"
                 disabled={!store.canClose()}
                 id='close-button'
                 onClick={handleClose}
                 variant="contained">
-                    <CloseIcon />
+                <CloseIcon />
             </Button>
         </div>
     }
-    else{
-        value = <Stack spacing={2} direction="row"  justifyContent="center" >
-        <Button
-            color="inherit"
-            onClick={searchByCurrentList}
-            variant="contained">
-            <Home />
-        </Button>
-        <Button
-            color="inherit"
-            onClick={searchByLoginList}
-            variant="contained">
+    else {
+        value = <Stack spacing={2} direction="row" justifyContent="center" >
+            <Button
+                color="inherit"
+                onClick={searchByCurrentList}
+                variant="contained">
+                <Home />
+            </Button>
+            <Button
+                color="inherit"
+                onClick={searchByLoginList}
+                variant="contained">
                 <People />
-        </Button>
-        <Button
-            color="inherit"
-            onClick={searchByUserName}
-            variant="contained">
+            </Button>
+            <Button
+                color="inherit"
+                onClick={searchByUserName}
+                variant="contained">
                 <Person />
-        </Button>
-        <TextField id="outlined-basic" label="Enter Your Search" variant="standard" style={{backgroundColor:'white'}} />
-    </Stack>
-    // TODO:SortedListIcon
+            </Button>
+            <TextField id="outlined-basic" label="Enter Your Search" variant="standard" style={{ backgroundColor: 'white' }} />
+        </Stack>
+        // TODO:SortedListIcon
 
     }
-       
-    
+
+
     return (
         value
     )

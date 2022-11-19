@@ -7,7 +7,9 @@ import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import QueueMusic from '@mui/icons-material/QueueMusic';
-import ContentCopy from '@mui/icons-material/ContentCopy';
+import ThumbUp from '@mui/icons-material/ThumbUp';
+import ThumbDown from '@mui/icons-material/ThumbDown';
+
 
 
 /*
@@ -90,9 +92,17 @@ function ListCard(props) {
             <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                    <ContentCopy style={{fontSize:'28pt'}} />
+                    <ThumbUp style={{fontSize:'28pt'}} />
                 </IconButton>
+                <span id="thumbUp-count">0</span>
             </Box>
+            <Box sx={{ p: 1 }}>
+                <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                    <ThumbDown style={{fontSize:'28pt'}} />
+                </IconButton>
+                <span id="thumbDown-count">0</span>
+            </Box>
+            
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={handleToggleEdit} aria-label='edit'>
                     <EditIcon style={{fontSize:'28pt'}} />
