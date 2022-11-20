@@ -77,6 +77,17 @@ function ListCard(props) {
         store.changeSelectSession(id);
 
     }
+    function handleChangeUpvoteNumber(event,id){
+        event.stopPropagation();
+        store.ChangeUpVoteNumber(id);
+    }
+
+    function handleChangeDownVoteNumber(event,id){
+        event.stopPropagation();
+        store.ChangeDownVoteNumber(id);
+    }
+
+
 
     let selectClass = "unselected-list-card";
     if (selected) {
@@ -86,12 +97,12 @@ function ListCard(props) {
     if (store.isListNameEditActive) {
         cardStatus = true;
     }
-    let cardElement =
+    let cardElement = store.sessionSelectedList!=null&&store.sessionSelectedList._id == idNamePair._id ?
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
             sx={{ marginTop: '15px', display: 'flex', p: 1 }}
-            style={{ width: '100%', fontSize: '25pt' }}
+            style={{ width: '100%', fontSize: '25pt', backgroundColor: '#9f98f0' }}
             button
             onClick={(event) => {
                 handleLoadList(event, idNamePair._id)
@@ -99,16 +110,16 @@ function ListCard(props) {
         >
             <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
             <Box sx={{ p: 1 }}>
-                <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                <IconButton aria-label='edit' onClick={(event) => {handleChangeUpvoteNumber(event, idNamePair._id)}}>
                     <ThumbUp style={{ fontSize: '28pt' }} />
                 </IconButton>
-                <span id="thumbUp-count">0</span>
+                <span id="thumbUp-count">{idNamePair.upVote.length}</span>
             </Box>
             <Box sx={{ p: 1 }}>
-                <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                <IconButton onClick={(event) => {handleChangeDownVoteNumber(event, idNamePair._id)}} aria-label='edit'>
                     <ThumbDown style={{ fontSize: '28pt' }} />
                 </IconButton>
-                <span id="thumbDown-count">0</span>
+                <span id="thumbDown-count">{idNamePair.downVote.length}</span>
             </Box>
 
             <Box sx={{ p: 1 }}>
@@ -124,13 +135,61 @@ function ListCard(props) {
                 </IconButton>
             </Box>
             <Box sx={{ p: 1 }}>
-                <IconButton  onClick={(event) => {
-                        handleClickSelectedSong(event, idNamePair._id)
-                    }}>
+                <IconButton onClick={(event) => {
+                    handleClickSelectedSong(event, idNamePair._id)
+                }}>
                     <QueueMusic style={{ fontSize: '28pt' }}></QueueMusic>
                 </IconButton>
             </Box>
         </ListItem>
+        :
+        <ListItem
+        id={idNamePair._id}
+        key={idNamePair._id}
+        sx={{ marginTop: '15px', display: 'flex', p: 1 }}
+        style={{ width: '100%', fontSize: '25pt' }}
+        button
+        onClick={(event) => {
+            handleLoadList(event, idNamePair._id)
+        }}
+    >
+        <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+        <Box sx={{ p: 1 }}>
+            <IconButton onClick={(event) => {handleChangeUpvoteNumber(event, idNamePair._id)}} aria-label='edit'>
+                <ThumbUp style={{ fontSize: '28pt' }} />
+            </IconButton>
+            <span id="thumbUp-count">{idNamePair.upVote.length}</span>
+        </Box>
+        <Box sx={{ p: 1 }}>
+            <IconButton onClick={(event) => {handleChangeDownVoteNumber(event, idNamePair._id)}} aria-label='edit'>
+                <ThumbDown style={{ fontSize: '28pt' }} />
+            </IconButton>
+            <span id="thumbDown-count">{idNamePair.downVote.length}</span>
+        </Box>
+
+        <Box sx={{ p: 1 }}>
+            <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                <EditIcon style={{ fontSize: '28pt' }} />
+            </IconButton>
+        </Box>
+        <Box sx={{ p: 1 }}>
+            <IconButton onClick={(event) => {
+                handleDeleteList(event, idNamePair._id)
+            }} aria-label='delete'>
+                <DeleteIcon style={{ fontSize: '28pt' }} />
+            </IconButton>
+        </Box>
+        <Box sx={{ p: 1 }}>
+            <IconButton onClick={(event) => {
+                handleClickSelectedSong(event, idNamePair._id)
+            }}>
+                <QueueMusic style={{ fontSize: '28pt' }}></QueueMusic>
+            </IconButton>
+        </Box>
+    </ListItem>
+
+
+
 
     if (editActive) {
         cardElement =

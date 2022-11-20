@@ -183,7 +183,10 @@ getPlaylistPairs = async (req, res) => {
                         let list = playlists[key];
                         let pair = {
                             _id: list._id,
-                            name: list.name
+                            name: list.name,
+                            upVote:list.upVote,
+                            downVote:list.downVote,
+                            publish:list.publish
                         };
                         pairs.push(pair);
                     }
@@ -241,6 +244,8 @@ updatePlaylist = async (req, res) => {
                     list.songs = body.playlist.songs;
                     list.publish=body.playlist.publish;
                     list.comments=body.playlist.comments;
+                    list.upVote=body.playlist.upVote;
+                    list.downVote=body.playlist.downVote;
                     list
                         .save()
                         .then(() => {
@@ -267,7 +272,10 @@ updatePlaylist = async (req, res) => {
         }
         asyncFindUser(playlist);
     })
+
 }
+
+
 module.exports = {
     createPlaylist,
     deletePlaylist,
@@ -275,5 +283,5 @@ module.exports = {
     getPlaylistPairs,
     getPlaylists,
     updatePlaylist,
-    deletePlaylistById
+    deletePlaylistById,
 }

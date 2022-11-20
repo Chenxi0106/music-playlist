@@ -12,6 +12,9 @@ const playlistSchema = new Schema(
         }], required: true },
         publish:{type:Boolean, required:true},
         comments:{type:[String],required:true},
+        upVote:{type:[String],required:true},
+        downVote:{type:[String],required:true},
+
     },
     { timestamps: true },
 )
