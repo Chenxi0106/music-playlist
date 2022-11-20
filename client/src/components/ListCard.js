@@ -39,6 +39,7 @@ function ListCard(props) {
         }
     }
 
+
     function handleToggleEdit(event) {
         event.stopPropagation();
         toggleEdit();
@@ -70,6 +71,13 @@ function ListCard(props) {
         setText(event.target.value);
     }
 
+    //own code
+    function handleClickSelectedSong(event, id) {
+        event.stopPropagation();
+        store.changeSelectSession(id);
+
+    }
+
     let selectClass = "unselected-list-card";
     if (selected) {
         selectClass = "selected-list-card";
@@ -92,32 +100,34 @@ function ListCard(props) {
             <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                    <ThumbUp style={{fontSize:'28pt'}} />
+                    <ThumbUp style={{ fontSize: '28pt' }} />
                 </IconButton>
                 <span id="thumbUp-count">0</span>
             </Box>
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                    <ThumbDown style={{fontSize:'28pt'}} />
+                    <ThumbDown style={{ fontSize: '28pt' }} />
                 </IconButton>
                 <span id="thumbDown-count">0</span>
             </Box>
-            
+
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                    <EditIcon style={{fontSize:'28pt'}} />
+                    <EditIcon style={{ fontSize: '28pt' }} />
                 </IconButton>
             </Box>
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={(event) => {
-                        handleDeleteList(event, idNamePair._id)
-                    }} aria-label='delete'>
-                    <DeleteIcon style={{fontSize:'28pt'}} />
+                    handleDeleteList(event, idNamePair._id)
+                }} aria-label='delete'>
+                    <DeleteIcon style={{ fontSize: '28pt' }} />
                 </IconButton>
             </Box>
             <Box sx={{ p: 1 }}>
-                <IconButton>
-                    <QueueMusic style={{fontSize:'28pt'}}></QueueMusic>
+                <IconButton  onClick={(event) => {
+                        handleClickSelectedSong(event, idNamePair._id)
+                    }}>
+                    <QueueMusic style={{ fontSize: '28pt' }}></QueueMusic>
                 </IconButton>
             </Box>
         </ListItem>
@@ -136,8 +146,8 @@ function ListCard(props) {
                 onKeyPress={handleKeyPress}
                 onChange={handleUpdateText}
                 defaultValue={idNamePair.name}
-                inputProps={{style: {fontSize: 48}}}
-                InputLabelProps={{style: {fontSize: 24}}}
+                inputProps={{ style: { fontSize: 48 } }}
+                InputLabelProps={{ style: { fontSize: 24 } }}
                 autoFocus
             />
     }

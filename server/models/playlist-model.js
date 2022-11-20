@@ -9,9 +9,9 @@ const playlistSchema = new Schema(
             title: String,
             artist: String,
             youTubeId: String,
-            comments:[String]
         }], required: true },
-        publish:{type:Boolean, required:true}
+        publish:{type:Boolean, required:true},
+        comments:{type:[String],required:true},
     },
     { timestamps: true },
 )

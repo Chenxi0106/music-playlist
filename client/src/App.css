@@ -379,6 +379,7 @@
   #content-session{
     position:absolute;
     top:10%;
+    width:100%;
 
 
   }
@@ -387,6 +388,12 @@
     left:20%;
     width:60%
   }
+
+  #chat-input-box{
+    display: flex;
+    top: 95%;
+  }
+
 
 
 

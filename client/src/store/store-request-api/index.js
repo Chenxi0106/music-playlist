@@ -6,13 +6,14 @@ const api = axios.create({
     baseURL: 'http://localhost:4000/api',
 })
 
-export const createPlaylist = (newListName, newSongs, userEmail,isPublish) => {
+export const createPlaylist = (newListName, newSongs, userEmail,isPublish,comments) => {
     return api.post(`/playlist/`, {
         // SPECIFY THE PAYLOAD
         name: newListName,
         songs: newSongs,
         ownerEmail: userEmail,
         publish:isPublish,
+        comments:comments,
     })
 }
 export const deletePlaylistById = (id) => api.delete(`/playlists/${id}`)
