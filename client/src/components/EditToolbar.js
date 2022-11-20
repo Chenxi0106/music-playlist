@@ -134,7 +134,7 @@ function EditToolbar() {
 
     return (
         value
-    )
+    );
 }
 
 export default EditToolbar;

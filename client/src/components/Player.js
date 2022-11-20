@@ -19,7 +19,7 @@ export default function Player() {
     // THIS HAS THE YOUTUBE IDS FOR THE SONGS IN OUR PLAYLIST
 
     const { store } = useContext(GlobalStoreContext);
-    let videoPlaylist=null;
+    let videoPlaylist=store.currentVideo;
     let playlist = store.sessionSelectedList.songs.map((song)=>
         song.youTubeId);
 
@@ -62,6 +62,9 @@ export default function Player() {
         let playerStatus = event.data;
         let player = event.target;
         videoPlaylist=player;
+        if(store.currentVideo!=videoPlaylist){
+            store.updateCurrentVideo(player);
+        }
         if (playerStatus === -1) {
             // VIDEO UNSTARTED
             console.log("-1 Video unstarted");

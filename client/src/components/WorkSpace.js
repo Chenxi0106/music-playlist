@@ -6,7 +6,6 @@ import MUIRemoveSongModal from './MUIRemoveSongModal'
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import { GlobalStoreContext } from '../store/index.js'
-import Session from './Session.js'
 /*
     This React component lets us edit a loaded list, which only
     happens when we are on the proper route.
@@ -41,7 +40,7 @@ function WorkspaceScreen() {
                 ))  
             }
          </List>
-         <Session/>
+         {/* <Session/> */}
          { modalJSX }
          </Box>
     )

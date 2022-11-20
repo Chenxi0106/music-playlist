@@ -6,7 +6,14 @@ import Session from './Session'
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab'
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography'
+import SongCard from './SongCard.js'
+import MUIEditSongModal from './MUIEditSongModal'
+import MUIRemoveSongModal from './MUIRemoveSongModal'
+import Box from '@mui/material/Box';
+import WorkspaceScreen from './WorkSpace'
+
+
+
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -37,26 +44,44 @@ const HomeScreen = () => {
                 }
             </List>;
     }
+    
+    let modalJSX = "";
+    if (store.isEditSongModalOpen()) {
+        modalJSX = <MUIEditSongModal />;
+    }
+    else if (store.isRemoveSongModalOpen()) {
+        modalJSX = <MUIRemoveSongModal />;
+    }
+
+
+    let res = store.currentList == null?
+            <div id="playlist-selector">
+                <div id="list-selector-heading">
+                </div>
+                <Fab
+                    color="inherit"
+                    aria-label="add"
+                    id="add-list-button"
+                    onClick={handleCreateNewList}
+                >
+                    <AddIcon />
+                </Fab>
+                <div id="list-selector-list">
+                    {
+                        listCard
+                    }
+                    <MUIDeleteModal />
+                </div>
+                {/* <Session /> */}
+            </div>
+            :<WorkspaceScreen/>;
+    
     return (
-        <div id="playlist-selector">
-            <div id="list-selector-heading">
-            </div>
-            <Fab
-                color="inherit"
-                aria-label="add"
-                id="add-list-button"
-                onClick={handleCreateNewList}
-            >
-                <AddIcon />
-            </Fab>
-            <div id="list-selector-list">
-                {
-                    listCard
-                }
-                <MUIDeleteModal />
-            </div>
-            <Session/>
-        </div>)
+        <div>
+              { res }
+              <Session />
+        </div>
+    );
 }
 
 export default HomeScreen;

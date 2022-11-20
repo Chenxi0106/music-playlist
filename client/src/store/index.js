@@ -32,6 +32,7 @@ export const GlobalStoreActionType = {
     REMOVE_SONG: "REMOVE_SONG",
     HIDE_MODALS: "HIDE_MODALS",
     CHANGE_SESSION_STATE:"CHANGE_SESSION_STATE",
+    UPDATE_CURRENT_PLAYER:'UPDATE_CURRENT_PLAYER',
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -60,7 +61,8 @@ function GlobalStoreContextProvider(props) {
         listMarkedForDeletion: null,
         //own code
         sessionState:null,
-        sessionSelectedList:null
+        sessionSelectedList:null,
+        currentVideo:null
     });
     const history = useHistory();
 
@@ -88,7 +90,8 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     sessionState:store.sessionState,
-                    sessionSelectedList:store.sessionSelectedList
+                    sessionSelectedList:store.sessionSelectedList,
+                    currentVideo:store.currentVideo
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -103,8 +106,9 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
-                    sessionState:null,
-                    sessionSelectedList:null
+                    sessionState:store.sessionState,
+                    sessionSelectedList:store.sessionSelectedList,
+                    currentVideo:store.currentVideo
                 })
             }
             // CREATE A NEW LIST
@@ -120,7 +124,8 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     sessionState:store.sessionState,
-                    sessionSelectedList:payload
+                    sessionSelectedList:payload,
+                    currentVideo:store.currentVideo
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -136,7 +141,8 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     sessionState:store.sessionState,
-                    sessionSelectedList:store.sessionSelectedList
+                    sessionSelectedList:store.sessionSelectedList,
+                    currentVideo:store.currentVideo
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -152,7 +158,8 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: payload.id,
                     listMarkedForDeletion: payload.playlist,
                     sessionState:store.sessionState,
-                    sessionSelectedList:store.sessionSelectedList
+                    sessionSelectedList:store.sessionSelectedList,
+                    currentVideo:store.currentVideo
                 });
             }
             // UPDATE A LIST
@@ -168,7 +175,8 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     sessionState:store.sessionState,
-                    sessionSelectedList:payload
+                    sessionSelectedList:payload,
+                    currentVideo:store.currentVideo
                 });
             }
             // START EDITING A LIST NAME
@@ -184,7 +192,8 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     sessionState:store.sessionState,
-                    sessionSelectedList:store.sessionSelectedList
+                    sessionSelectedList:store.sessionSelectedList,
+                    currentVideo:store.currentVideo
                 });
             }
             // 
@@ -200,7 +209,8 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     sessionState:store.sessionState,
-                    sessionSelectedList:store.sessionSelectedList
+                    sessionSelectedList:store.sessionSelectedList,
+                    currentVideo:store.currentVideo
                 });
             }
             case GlobalStoreActionType.REMOVE_SONG: {
@@ -215,7 +225,8 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     sessionState:store.sessionState,
-                    sessionSelectedList:store.sessionSelectedList
+                    sessionSelectedList:store.sessionSelectedList,
+                    currentVideo:store.currentVideo
                 });
             }
             case GlobalStoreActionType.HIDE_MODALS: {
@@ -230,7 +241,8 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     sessionState:store.sessionState,
-                    sessionSelectedList:store.sessionSelectedList
+                    sessionSelectedList:store.sessionSelectedList,
+                    currentVideo:store.currentVideo
                 });
             }
             //own code
@@ -247,7 +259,25 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: store.listIdMarkedForDeletion,
                     listMarkedForDeletion: store.listMarkedForDeletion,
                     sessionState:payload.state,
-                    sessionSelectedList:payload.list
+                    sessionSelectedList:payload.list,
+                    currentVideo:store.currentVideo
+                });
+            }
+            case GlobalStoreActionType.UPDATE_CURRENT_PLAYER:{
+                return setStore({
+                    currentModal : store.currentModal,
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    currentSongIndex:store.currentSongIndex,
+                    currentSong: store.currentSong,
+                    newListCounter: store.newListCounter,
+                    listNameActive: store.listNameActive,
+                    listIdMarkedForDeletion: store.listIdMarkedForDeletion,
+                    listMarkedForDeletion: store.listMarkedForDeletion,
+                    sessionState:store.sessionState,
+                    sessionSelectedList:store.sessionSelectedList,
+                    currentVideo:payload.video
+
                 });
             }
 
@@ -318,7 +348,7 @@ function GlobalStoreContextProvider(props) {
             );
 
             // IF IT'S A VALID LIST THEN LET'S START EDITING IT
-            history.push("/playlist/" + newList._id);
+            // history.push("/playlist/" + newList._id);
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
@@ -431,7 +461,7 @@ function GlobalStoreContextProvider(props) {
                         type: GlobalStoreActionType.SET_CURRENT_LIST,
                         payload: playlist
                     });
-                    history.push("/playlist/" + playlist._id);
+                    // history.push("/playlist/" + playlist._id);
                 }
             }
         }
@@ -626,6 +656,13 @@ function GlobalStoreContextProvider(props) {
             }
         }
         asyncChangeSelectSession(id);
+    }
+    store.updateCurrentVideo = function(player){
+        storeReducer({
+            type:GlobalStoreActionType.UPDATE_CURRENT_PLAYER,
+            payload:{video:player}
+        })
+
     }
 
 
