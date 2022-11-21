@@ -189,6 +189,7 @@ getPlaylistPairs = async (req, res) => {
                             publish:list.publish,
                             createTime:list.createTime,
                             
+                            
                         };
                         pairs.push(pair);
                     }

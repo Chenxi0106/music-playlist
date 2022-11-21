@@ -117,16 +117,16 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.CREATE_NEW_LIST: {
                 return setStore({
                     currentModal: CurrentModal.NONE,
-                    idNamePairs: store.idNamePairs,
-                    currentList: payload,
+                    idNamePairs: payload.newIdNamePair,
+                    currentList: store.currentList,
                     currentSongIndex: -1,
                     currentSong: null,
-                    newListCounter: store.newListCounter + 1,
+                    newListCounter: payload.value + 1,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     sessionState: store.sessionState,
-                    sessionSelectedList: payload,
+                    sessionSelectedList: store.sessionSelectedList,
                     currentVideo: store.currentVideo
                 })
             }
@@ -439,7 +439,22 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
-        let newListName = "Untitled" + store.newListCounter;
+        let value=store.newListCounter;
+        // own code
+        //find the unique default name
+        let duplicatedName=true;
+        while(duplicatedName){
+            let i=0;
+            for(;i<store.idNamePairs.length;i++){
+                if(store.idNamePairs[i].name=="Untitled" + value){
+                    value+=1;
+                    break;
+                }
+            }
+            duplicatedName=i<store.idNamePairs.length;
+        }
+        let newListName = "Untitled" +value;
+        
         const response = await api.createPlaylist(newListName, [], auth.user.email, false, [], [], [],new Date().getTime());
         console.log("createNewList response: " + response);
         if (response.status === 201) {
@@ -449,8 +464,8 @@ function GlobalStoreContextProvider(props) {
                 if (response.data.success) {
                     let pairsArray = response.data.idNamePairs;
                     storeReducer({
-                        type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                        payload: pairsArray
+                        type: GlobalStoreActionType.CREATE_NEW_LIST,
+                        payload: {newIdNamePair:pairsArray,value:value}
                     });
                 }
                 else {
