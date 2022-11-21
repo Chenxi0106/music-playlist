@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react';
 import { GlobalStoreContext } from '../store'
 import AuthContext from '../auth'
 import Button from '@mui/material/Button';
@@ -13,6 +13,10 @@ import UndoIcon from '@mui/icons-material/Undo';
 import CloseIcon from '@mui/icons-material/HighlightOff';
 import Publish from '@mui/icons-material/Publish';
 import ContentCopy from '@mui/icons-material/ContentCopy';
+import Sort from '@mui/icons-material/Sort';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+
 /*
     This toolbar is a functional React component that
     manages the undo/redo/close buttons.
@@ -22,6 +26,46 @@ import ContentCopy from '@mui/icons-material/ContentCopy';
 function EditToolbar() {
     const { store } = useContext(GlobalStoreContext);
     const { auth } = useContext(AuthContext);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const isMenuOpen = Boolean(anchorEl);
+
+
+    //own code
+
+    const handleProfileMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const sortMenu = (
+        <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={isMenuOpen}
+            onClose={handleMenuClose}
+        >
+            <MenuItem onClick={dummyFunction}>Name</MenuItem>
+            <MenuItem onClick={dummyFunction}>Publish Date</MenuItem>
+            <MenuItem onClick={dummyFunction}>Likes</MenuItem>
+            <MenuItem onClick={dummyFunction}>Dislikes</MenuItem>
+        </Menu>
+    );
+    function dummyFunction() {
+    }
+
+
+
+
 
     function searchByCurrentList() {
         store.searchByCurrentList();
@@ -51,14 +95,18 @@ function EditToolbar() {
         store.currentList.publish = true;
         store.updateCurrentList();
     }
-    function handleCopyContent(){
+    function handleCopyContent() {
         store.copyCurrentList();
 
     }
-    let loginAsGuest= auth.loginAsGuest;
+
+
+
+
+    let loginAsGuest = auth.loginAsGuest;
     let value = null;
-    if (store.currentList) {
-        value = <div id="edit-toolbar">
+    value = store.currentList ?
+        <div id="edit-toolbar">
             <Button
                 disabled={loginAsGuest}
                 color="inherit"
@@ -69,7 +117,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canPublish()||loginAsGuest}
+                disabled={!store.canPublish() || loginAsGuest}
                 id='publish-list-button'
                 onClick={handlePublishList}
                 variant="contained">
@@ -77,7 +125,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canAddNewSong()||loginAsGuest}
+                disabled={!store.canAddNewSong() || loginAsGuest}
                 id='add-song-button'
                 onClick={handleAddNewSong}
                 variant="contained">
@@ -85,7 +133,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canUndo()||loginAsGuest}
+                disabled={!store.canUndo() || loginAsGuest}
                 id='undo-button'
                 onClick={handleUndo}
                 variant="contained">
@@ -93,7 +141,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canRedo()||loginAsGuest}
+                disabled={!store.canRedo() || loginAsGuest}
                 id='redo-button'
                 onClick={handleRedo}
                 variant="contained">
@@ -101,16 +149,15 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canClose()||loginAsGuest}
+                disabled={!store.canClose() || loginAsGuest}
                 id='close-button'
                 onClick={handleClose}
                 variant="contained">
                 <CloseIcon />
             </Button>
         </div>
-    }
-    else {
-        value = <Stack spacing={2} direction="row" justifyContent="center" >
+        :
+        <Stack spacing={2} direction="row" justifyContent="center" >
             <Button
                 color="inherit"
                 onClick={searchByCurrentList}
@@ -130,10 +177,21 @@ function EditToolbar() {
                 <Person />
             </Button>
             <TextField id="outlined-basic" label="Enter Your Search" variant="standard" style={{ backgroundColor: 'white' }} />
+            <div style={{ fontSize: '20pt', marginLeft: '20%' }}>SORT BY</div>
+            <Button
+                size="large"
+                edge="end"
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+            >
+                <Sort />
+            </Button>
+            {
+                sortMenu
+            }
         </Stack>
-        // TODO:SortedListIcon
 
-    }
 
 
     return (

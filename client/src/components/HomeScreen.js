@@ -6,11 +6,10 @@ import Session from './Session'
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab'
 import List from '@mui/material/List';
-import SongCard from './SongCard.js'
 import MUIEditSongModal from './MUIEditSongModal'
 import MUIRemoveSongModal from './MUIRemoveSongModal'
-import Box from '@mui/material/Box';
 import WorkspaceScreen from './WorkSpace'
+import AuthContext from '../auth'
 
 
 
@@ -21,6 +20,7 @@ import WorkspaceScreen from './WorkSpace'
 */
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
 
     useEffect(() => {
         store.loadIdNamePairs();
@@ -59,6 +59,7 @@ const HomeScreen = () => {
                 <div id="list-selector-heading">
                 </div>
                 <Fab
+                    disabled={auth.loginAsGuest}
                     color="inherit"
                     aria-label="add"
                     id="add-list-button"

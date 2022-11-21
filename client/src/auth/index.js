@@ -174,7 +174,6 @@ function AuthContextProvider(props) {
                 type:AuthActionType.LOGIN_AS_GUEST,
                 payload:null
             })
-            store.loginAsGuest();
         }
 
     return (
