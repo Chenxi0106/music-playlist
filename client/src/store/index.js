@@ -33,6 +33,7 @@ export const GlobalStoreActionType = {
     HIDE_MODALS: "HIDE_MODALS",
     CHANGE_SESSION_STATE: "CHANGE_SESSION_STATE",
     UPDATE_CURRENT_PLAYER: 'UPDATE_CURRENT_PLAYER',
+    DEFAULT_LOGIN_SCREEN: 'DEFAULT_LOGIN_SCREEN'
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -281,6 +282,24 @@ function GlobalStoreContextProvider(props) {
 
                 });
             }
+            case GlobalStoreActionType.DEFAULT_LOGIN_SCREEN: {
+                return setStore({
+                    currentModal: CurrentModal.NONE,
+                    idNamePairs: [],
+                    //in here idNamePairs=[_id,name, upvote,downvote, publish?]
+                    currentList: null,
+                    currentSongIndex: -1,
+                    currentSong: null,
+                    newListCounter: 0,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null,
+                    //own code
+                    sessionState: null,
+                    sessionSelectedList: null,
+                    currentVideo: null
+                })
+            }
 
             default:
                 return store;
@@ -363,7 +382,7 @@ function GlobalStoreContextProvider(props) {
         asyncChangeListName(id);
 
     }
-    
+
     store.ChangeDownVoteNumber = function (id) {
         // GET THE LIST
         async function asyncChangeListName(id) {
@@ -757,9 +776,9 @@ function GlobalStoreContextProvider(props) {
         })
 
     }
-    store.copyCurrentList = async function(){
+    store.copyCurrentList = async function () {
         let newListName = "Untitled" + store.newListCounter;
-        const response = await api.createPlaylist(store.currentList.name, store.currentList.songs, auth.user.email, false,[],[],[]);
+        const response = await api.createPlaylist(store.currentList.name, store.currentList.songs, auth.user.email, false, [], [], []);
         console.log("Copy List response: " + response);
         if (response.status === 201) {
             console.log("List is successfully copied");
@@ -769,6 +788,12 @@ function GlobalStoreContextProvider(props) {
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
         }
+    }
+    store.setStoreToDefault = function(){
+        storeReducer({
+            type:GlobalStoreActionType.DEFAULT_LOGIN_SCREEN,
+            payload:null
+        })
     }
 
 

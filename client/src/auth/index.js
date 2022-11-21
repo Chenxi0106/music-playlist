@@ -1,6 +1,8 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom'
 import api from './auth-request-api'
+import { GlobalStoreContext } from '../store'
+import { useContext } from 'react';
 
 const AuthContext = createContext();
 console.log("create AuthContext: " + AuthContext);
@@ -17,6 +19,7 @@ export const AuthActionType = {
 }
 
 function AuthContextProvider(props) {
+    const { store } = useContext(GlobalStoreContext);
     const [auth, setAuth] = useState({
         user: null,
         loggedIn: false,
@@ -158,7 +161,6 @@ function AuthContextProvider(props) {
         return initials;
     }
 
-        //own code
         auth.closeAlertModal = function () {
             authReducer({
                 type: AuthActionType.FAIL_AUTHENTICATION,
@@ -166,11 +168,13 @@ function AuthContextProvider(props) {
             })
         }
 
+        //own code
         auth.setLoginAsGuest = function(){
             authReducer({
                 type:AuthActionType.LOGIN_AS_GUEST,
                 payload:null
             })
+            store.loginAsGuest();
         }
 
     return (
