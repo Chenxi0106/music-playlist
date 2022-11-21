@@ -50,6 +50,7 @@ function EditToolbar() {
         store.updateCurrentList();
     }
     function handleCopyContent(){
+        store.copyCurrentList();
 
     }
 

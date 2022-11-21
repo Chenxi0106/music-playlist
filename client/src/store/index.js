@@ -757,6 +757,19 @@ function GlobalStoreContextProvider(props) {
         })
 
     }
+    store.copyCurrentList = async function(){
+        let newListName = "Untitled" + store.newListCounter;
+        const response = await api.createPlaylist(store.currentList.name, store.currentList.songs, auth.user.email, false,[],[],[]);
+        console.log("Copy List response: " + response);
+        if (response.status === 201) {
+            console.log("List is successfully copied");
+            // IF IT'S A VALID LIST THEN LET'S START EDITING IT
+            // history.push("/playlist/" + newList._id);
+        }
+        else {
+            console.log("API FAILED TO CREATE A NEW LIST");
+        }
+    }
 
 
     return (
