@@ -408,10 +408,12 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
     store.closeCurrentList = function () {
-        storeReducer({
-            type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
-            payload: {}
-        });
+        store.loadIdNamePairs();
+        //directly load the IdNamePairs
+        // storeReducer({
+        //     type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
+        //     payload: {}
+        // });
         tps.clearAllTransactions();
         // history.push("/");
     }

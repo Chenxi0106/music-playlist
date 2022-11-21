@@ -142,7 +142,7 @@ function ListCard(props) {
                 </IconButton>
             </Box>
         </ListItem>
-        :
+        :idNamePair.publish?
         <ListItem
         id={idNamePair._id}
         key={idNamePair._id}
@@ -187,6 +187,53 @@ function ListCard(props) {
             </IconButton>
         </Box>
     </ListItem>
+    //list is not selected but published
+    :
+    <ListItem
+    id={idNamePair._id}
+    key={idNamePair._id}
+    sx={{ marginTop: '15px', display: 'flex', p: 1 }}
+    style={{ width: '100%', fontSize: '25pt', backgroundColor: '#eeeedd' }}
+    button
+    onClick={(event) => {
+        handleLoadList(event, idNamePair._id)
+    }}
+>
+    <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+    <Box sx={{ p: 1 }}>
+        <IconButton onClick={(event) => {handleChangeUpvoteNumber(event, idNamePair._id)}} aria-label='edit'>
+            <ThumbUp style={{ fontSize: '28pt' }} />
+        </IconButton>
+        <span id="thumbUp-count">{idNamePair.upVote.length}</span>
+    </Box>
+    <Box sx={{ p: 1 }}>
+        <IconButton onClick={(event) => {handleChangeDownVoteNumber(event, idNamePair._id)}} aria-label='edit'>
+            <ThumbDown style={{ fontSize: '28pt' }} />
+        </IconButton>
+        <span id="thumbDown-count">{idNamePair.downVote.length}</span>
+    </Box>
+
+    <Box sx={{ p: 1 }}>
+        <IconButton onClick={handleToggleEdit} aria-label='edit'>
+            <EditIcon style={{ fontSize: '28pt' }} />
+        </IconButton>
+    </Box>
+    <Box sx={{ p: 1 }}>
+        <IconButton onClick={(event) => {
+            handleDeleteList(event, idNamePair._id)
+        }} aria-label='delete'>
+            <DeleteIcon style={{ fontSize: '28pt' }} />
+        </IconButton>
+    </Box>
+    <Box sx={{ p: 1 }}>
+        <IconButton onClick={(event) => {
+            handleClickSelectedSong(event, idNamePair._id)
+        }}>
+            <QueueMusic style={{ fontSize: '28pt' }}></QueueMusic>
+        </IconButton>
+    </Box>
+</ListItem>
+//list is not publish
 
 
 
