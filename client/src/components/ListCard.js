@@ -97,6 +97,7 @@ function ListCard(props) {
     if (store.isListNameEditActive) {
         cardStatus = true;
     }
+
     let cardElement = store.sessionSelectedList!=null&&store.sessionSelectedList._id == idNamePair._id ?
         <ListItem
             id={idNamePair._id}
@@ -108,37 +109,38 @@ function ListCard(props) {
                 handleLoadList(event, idNamePair._id)
             }}
         >
-            <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+            <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name} <div style={{fontSize:'12pt'}}>{new Date(idNamePair.createTime).toString().split("GMT")[0]}</div></Box>
+            
             <Box sx={{ p: 1 }}>
                 <IconButton aria-label='edit' onClick={(event) => {handleChangeUpvoteNumber(event, idNamePair._id)}}>
-                    <ThumbUp style={{ fontSize: '28pt' }} />
+                    <ThumbUp style={{ fontSize: '20pt' }} />
                 </IconButton>
                 <span id="thumbUp-count">{idNamePair.upVote.length}</span>
             </Box>
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={(event) => {handleChangeDownVoteNumber(event, idNamePair._id)}} aria-label='edit'>
-                    <ThumbDown style={{ fontSize: '28pt' }} />
+                    <ThumbDown style={{ fontSize: '20pt' }} />
                 </IconButton>
                 <span id="thumbDown-count">{idNamePair.downVote.length}</span>
             </Box>
 
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                    <EditIcon style={{ fontSize: '28pt' }} />
+                    <EditIcon style={{ fontSize: '20pt' }} />
                 </IconButton>
             </Box>
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={(event) => {
                     handleDeleteList(event, idNamePair._id)
                 }} aria-label='delete'>
-                    <DeleteIcon style={{ fontSize: '28pt' }} />
+                    <DeleteIcon style={{ fontSize: '20pt' }} />
                 </IconButton>
             </Box>
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={(event) => {
                     handleClickSelectedSong(event, idNamePair._id)
                 }}>
-                    <QueueMusic style={{ fontSize: '28pt' }}></QueueMusic>
+                    <QueueMusic style={{ fontSize: '20pt' }}></QueueMusic>
                 </IconButton>
             </Box>
         </ListItem>
@@ -153,37 +155,37 @@ function ListCard(props) {
             handleLoadList(event, idNamePair._id)
         }}
     >
-        <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+        <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name} <div style={{fontSize:'12pt'}}>{new Date(idNamePair.createTime).toString().split("GMT")[0]}</div></Box>
         <Box sx={{ p: 1 }}>
             <IconButton onClick={(event) => {handleChangeUpvoteNumber(event, idNamePair._id)}} aria-label='edit'>
-                <ThumbUp style={{ fontSize: '28pt' }} />
+                <ThumbUp style={{ fontSize: '20pt' }} />
             </IconButton>
             <span id="thumbUp-count">{idNamePair.upVote.length}</span>
         </Box>
         <Box sx={{ p: 1 }}>
             <IconButton onClick={(event) => {handleChangeDownVoteNumber(event, idNamePair._id)}} aria-label='edit'>
-                <ThumbDown style={{ fontSize: '28pt' }} />
+                <ThumbDown style={{ fontSize: '20pt' }} />
             </IconButton>
             <span id="thumbDown-count">{idNamePair.downVote.length}</span>
         </Box>
 
         <Box sx={{ p: 1 }}>
             <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                <EditIcon style={{ fontSize: '28pt' }} />
+                <EditIcon style={{ fontSize: '20pt' }} />
             </IconButton>
         </Box>
         <Box sx={{ p: 1 }}>
             <IconButton onClick={(event) => {
                 handleDeleteList(event, idNamePair._id)
             }} aria-label='delete'>
-                <DeleteIcon style={{ fontSize: '28pt' }} />
+                <DeleteIcon style={{ fontSize: '20pt' }} />
             </IconButton>
         </Box>
         <Box sx={{ p: 1 }}>
             <IconButton onClick={(event) => {
                 handleClickSelectedSong(event, idNamePair._id)
             }}>
-                <QueueMusic style={{ fontSize: '28pt' }}></QueueMusic>
+                <QueueMusic style={{ fontSize: '20pt' }}></QueueMusic>
             </IconButton>
         </Box>
     </ListItem>
@@ -199,37 +201,37 @@ function ListCard(props) {
         handleLoadList(event, idNamePair._id)
     }}
 >
-    <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+    <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name} <div style={{fontSize:'12pt'}}>{new Date(idNamePair.createTime).toString().split("GMT")[0]}</div></Box>
     <Box sx={{ p: 1 }}>
         <IconButton onClick={(event) => {handleChangeUpvoteNumber(event, idNamePair._id)}} aria-label='edit'>
-            <ThumbUp style={{ fontSize: '28pt' }} />
+            <ThumbUp style={{ fontSize: '20pt' }} />
         </IconButton>
         <span id="thumbUp-count">{idNamePair.upVote.length}</span>
     </Box>
     <Box sx={{ p: 1 }}>
         <IconButton onClick={(event) => {handleChangeDownVoteNumber(event, idNamePair._id)}} aria-label='edit'>
-            <ThumbDown style={{ fontSize: '28pt' }} />
+            <ThumbDown style={{ fontSize: '20pt' }} />
         </IconButton>
         <span id="thumbDown-count">{idNamePair.downVote.length}</span>
     </Box>
 
     <Box sx={{ p: 1 }}>
         <IconButton onClick={handleToggleEdit} aria-label='edit'>
-            <EditIcon style={{ fontSize: '28pt' }} />
+            <EditIcon style={{ fontSize: '20pt' }} />
         </IconButton>
     </Box>
     <Box sx={{ p: 1 }}>
         <IconButton onClick={(event) => {
             handleDeleteList(event, idNamePair._id)
         }} aria-label='delete'>
-            <DeleteIcon style={{ fontSize: '28pt' }} />
+            <DeleteIcon style={{ fontSize: '20pt' }} />
         </IconButton>
     </Box>
     <Box sx={{ p: 1 }}>
         <IconButton onClick={(event) => {
             handleClickSelectedSong(event, idNamePair._id)
         }}>
-            <QueueMusic style={{ fontSize: '28pt' }}></QueueMusic>
+            <QueueMusic style={{ fontSize: '20pt' }}></QueueMusic>
         </IconButton>
     </Box>
 </ListItem>

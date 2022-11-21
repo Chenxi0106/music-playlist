@@ -25,6 +25,7 @@ import MenuItem from '@mui/material/MenuItem';
 */
 function EditToolbar() {
     const { store } = useContext(GlobalStoreContext);
+    const [searchText, setSearchText ] = useState("");
     const { auth } = useContext(AuthContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
@@ -68,7 +69,7 @@ function EditToolbar() {
 
 
     function searchByCurrentList() {
-        store.searchByCurrentList();
+        store.searchByCurrentList(searchText);
     }
     function searchByLoginList() {
         store.searchByLoginList();
@@ -98,6 +99,10 @@ function EditToolbar() {
     function handleCopyContent() {
         store.copyCurrentList();
 
+    }
+
+    function handleUpdateSearchText(event){
+        setSearchText(event.target.value);
     }
 
 
@@ -176,7 +181,7 @@ function EditToolbar() {
                 variant="contained">
                 <Person />
             </Button>
-            <TextField id="outlined-basic" label="Enter Your Search" variant="standard" style={{ backgroundColor: 'white' }} />
+            <TextField id="outlined-basic" onChange={handleUpdateSearchText} label="Enter Your Search" variant="standard" style={{ backgroundColor: 'white' }} />
             <div style={{ fontSize: '20pt', marginLeft: '20%' }}>SORT BY</div>
             <Button
                 size="large"

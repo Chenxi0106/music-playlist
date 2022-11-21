@@ -14,6 +14,7 @@ const playlistSchema = new Schema(
         comments:{type:[String],required:true},
         upVote:{type:[String],required:true},
         downVote:{type:[String],required:true},
+        createTime:{type:Number,requried:true}
 
     },
     { timestamps: true },

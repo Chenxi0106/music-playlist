@@ -440,7 +440,7 @@ function GlobalStoreContextProvider(props) {
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
         let newListName = "Untitled" + store.newListCounter;
-        const response = await api.createPlaylist(newListName, [], auth.user.email, false, [], [], []);
+        const response = await api.createPlaylist(newListName, [], auth.user.email, false, [], [], [],new Date().getTime());
         console.log("createNewList response: " + response);
         if (response.status === 201) {
             tps.clearAllTransactions();
@@ -778,7 +778,7 @@ function GlobalStoreContextProvider(props) {
     }
     store.copyCurrentList = async function () {
         let newListName = "Untitled" + store.newListCounter;
-        const response = await api.createPlaylist(store.currentList.name, store.currentList.songs, auth.user.email, false, [], [], []);
+        const response = await api.createPlaylist(store.currentList.name, store.currentList.songs, auth.user.email, false, [], [], [],new Date().getTime());
         console.log("Copy List response: " + response);
         if (response.status === 201) {
             console.log("List is successfully copied");
@@ -795,6 +795,23 @@ function GlobalStoreContextProvider(props) {
             payload:null
         })
     }
+
+    store.searchByCurrentList = function(searchText){
+        let newIdNamePair=[];
+        for(let i=0;i<store.idNamePairs.length;i++){
+            if(store.idNamePairs[i].name.startsWith(searchText)){
+                newIdNamePair.push(store.idNamePairs[i]);
+            }
+        }
+        storeReducer({
+            type:GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+            payload:newIdNamePair
+        })
+    }
+
+
+
+
 
 
     return (
