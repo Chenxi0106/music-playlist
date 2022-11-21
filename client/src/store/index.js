@@ -177,7 +177,7 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     sessionState: store.sessionState,
-                    sessionSelectedList: payload,
+                    sessionSelectedList: store.sessionSelectedList,
                     currentVideo: store.currentVideo
                 });
             }
