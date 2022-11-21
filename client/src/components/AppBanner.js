@@ -53,7 +53,7 @@ export default function AppBanner() {
             <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
         </Menu>
     );
-    const loggedInMenu = 
+    const loggedInMenu =
         <Menu
             anchorEl={anchorEl}
             anchorOrigin={{
@@ -70,20 +70,49 @@ export default function AppBanner() {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
-        </Menu>        
+        </Menu>
+
+
+    const loginAsGuestMenu =
+        <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            id={menuId}
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={isMenuOpen}
+            onClose={handleMenuClose}
+        >
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            <MenuItem onClick={handleMenuClose}><Link to='/login/'>Login</Link></MenuItem>
+            <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
+        </Menu>
+
+
+
+
 
     let editToolbar = "";
     let menu = loggedOutMenu;
     if (auth.loggedIn) {
         menu = loggedInMenu;
         editToolbar = <EditToolbar />;
-    
     }
-    
+    else if (auth.loginAsGuest) {
+        menu=loginAsGuestMenu;
+        editToolbar = <EditToolbar />;
+    }
+
     function getAccountMenu(loggedIn) {
         let userInitials = auth.getUserInitials();
         console.log("userInitials: " + userInitials);
-        if (loggedIn) 
+        if (loggedIn)
             return <div>{userInitials}</div>;
         else
             return <AccountCircle />;
@@ -93,11 +122,11 @@ export default function AppBanner() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" style={{ background: '#2E3B55' }}>
                 <Toolbar>
-                    <Typography                        
+                    <Typography
                         variant="h4"
                         noWrap
                         component="div"
-                        sx={{ display: { xs: 'none', sm: 'block' } }}                        
+                        sx={{ display: { xs: 'none', sm: 'block' } }}
                     >
                         <Link style={{ textDecoration: 'none', color: 'white' }} to='/'><Star></Star></Link>
                     </Typography>
@@ -112,7 +141,7 @@ export default function AppBanner() {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            { getAccountMenu(auth.loggedIn) }
+                            {getAccountMenu(auth.loggedIn)}
                         </IconButton>
                     </Box>
                 </Toolbar>

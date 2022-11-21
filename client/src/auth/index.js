@@ -12,13 +12,16 @@ export const AuthActionType = {
     LOGOUT_USER: "LOGOUT_USER",
     REGISTER_USER: "REGISTER_USER",
     FAIL_AUTHENTICATION: "FAIL_AUTHENTICATION",
+    LOGIN_AS_GUEST:'LOGIN_AS_GUEST'
  
 }
 
 function AuthContextProvider(props) {
     const [auth, setAuth] = useState({
         user: null,
-        loggedIn: false
+        loggedIn: false,
+        //own code
+        loginAsGuest:false,
     });
     const history = useHistory();
 
@@ -32,7 +35,8 @@ function AuthContextProvider(props) {
             case AuthActionType.GET_LOGGED_IN: {
                 return setAuth({
                     user: payload.user,
-                    loggedIn: payload.loggedIn
+                    loggedIn: payload.loggedIn,
+                    loginAsGuest:false,
                 });
             }
             case AuthActionType.LOGIN_USER: {
@@ -44,13 +48,15 @@ function AuthContextProvider(props) {
             case AuthActionType.LOGOUT_USER: {
                 return setAuth({
                     user: null,
-                    loggedIn: false
+                    loggedIn: false,
+                    loginAsGuest:false
                 })
             }
             case AuthActionType.REGISTER_USER: {
                 return setAuth({
                     user: payload.user,
-                    loggedIn: true
+                    loggedIn: true,
+                    loginAsGuest:false,
                 })
             }
             case AuthActionType.FAIL_AUTHENTICATION: {
@@ -60,6 +66,14 @@ function AuthContextProvider(props) {
                     errorMessage: payload
                 })
             }
+            case AuthActionType.LOGIN_AS_GUEST:{
+                return setAuth({
+                    user:null,
+                    loggedIn: false,
+                    loginAsGuest: true
+                })
+            }
+            
             default:
                 return auth;
         }
@@ -149,6 +163,13 @@ function AuthContextProvider(props) {
             authReducer({
                 type: AuthActionType.FAIL_AUTHENTICATION,
                 payload: null
+            })
+        }
+
+        auth.setLoginAsGuest = function(){
+            authReducer({
+                type:AuthActionType.LOGIN_AS_GUEST,
+                payload:null
             })
         }
 

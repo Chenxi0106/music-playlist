@@ -20,8 +20,8 @@ export default function Player() {
 
     const { store } = useContext(GlobalStoreContext);
     let videoPlaylist=store.currentVideo;
-    let playlist = store.sessionSelectedList.songs.map((song)=>
-        song.youTubeId);
+    let playlist = store.sessionSelectedList!=null? store.sessionSelectedList.songs.map((song)=>
+        song.youTubeId):null;
 
     // THIS IS THE INDEX OF THE SONG CURRENTLY IN USE IN THE PLAYLIST
     let currentSong = 0;
@@ -89,7 +89,7 @@ export default function Player() {
     }
 
     let res = <YouTube
-    videoId={playlist[currentSong]}
+    videoId={playlist==null?playlist:playlist[currentSong]}
     opts={playerOptions}
     onReady={onPlayerReady}
     onStateChange={onPlayerStateChange}

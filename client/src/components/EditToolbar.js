@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
+import AuthContext from '../auth'
 import Button from '@mui/material/Button';
 import Home from '@mui/icons-material/Home';
 import People from '@mui/icons-material/People';
@@ -20,6 +21,7 @@ import ContentCopy from '@mui/icons-material/ContentCopy';
 */
 function EditToolbar() {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
 
     function searchByCurrentList() {
         store.searchByCurrentList();
@@ -53,11 +55,12 @@ function EditToolbar() {
         store.copyCurrentList();
 
     }
-
+    let loginAsGuest= auth.loginAsGuest;
     let value = null;
     if (store.currentList) {
         value = <div id="edit-toolbar">
             <Button
+                disabled={loginAsGuest}
                 color="inherit"
                 id='copy-list-button'
                 onClick={handleCopyContent}
@@ -66,7 +69,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canPublish()}
+                disabled={!store.canPublish()||loginAsGuest}
                 id='publish-list-button'
                 onClick={handlePublishList}
                 variant="contained">
@@ -74,7 +77,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canAddNewSong()}
+                disabled={!store.canAddNewSong()||loginAsGuest}
                 id='add-song-button'
                 onClick={handleAddNewSong}
                 variant="contained">
@@ -82,7 +85,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canUndo()}
+                disabled={!store.canUndo()||loginAsGuest}
                 id='undo-button'
                 onClick={handleUndo}
                 variant="contained">
@@ -90,7 +93,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canRedo()}
+                disabled={!store.canRedo()||loginAsGuest}
                 id='redo-button'
                 onClick={handleRedo}
                 variant="contained">
@@ -98,7 +101,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canClose()}
+                disabled={!store.canClose()||loginAsGuest}
                 id='close-button'
                 onClick={handleClose}
                 variant="contained">
