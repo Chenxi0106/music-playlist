@@ -100,7 +100,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.CLOSE_CURRENT_LIST: {
                 return setStore({
                     currentModal: CurrentModal.NONE,
-                    idNamePairs: store.idNamePairs,
+                    idNamePairs: payload.pairsArray,
                     currentList: null,
                     currentSongIndex: -1,
                     currentSong: null,
@@ -427,35 +427,45 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
     store.closeCurrentList = function () {
-        store.loadIdNamePairs();
-        //directly load the IdNamePairs
-        // storeReducer({
-        //     type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
-        //     payload: {}
-        // });
+        // store.loadIdNamePairs();
+        // directly load the IdNamePairs
+        async function asyncLoadIdNamePairs() {
+            const response = await api.getPlaylistPairs();
+            if (response.data.success) {
+                let pairsArray = response.data.idNamePairs;
+                storeReducer({
+                    type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
+                    payload: { pairsArray }
+                });
+            }
+            else {
+                console.log("API FAILED TO GET THE LIST PAIRS");
+            }
+        }
+        asyncLoadIdNamePairs();
         tps.clearAllTransactions();
         // history.push("/");
     }
 
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
-        let value=store.newListCounter;
+        let value = store.newListCounter;
         // own code
         //find the unique default name
-        let duplicatedName=true;
-        while(duplicatedName){
-            let i=0;
-            for(;i<store.idNamePairs.length;i++){
-                if(store.idNamePairs[i].name=="Untitled" + value){
-                    value+=1;
+        let duplicatedName = true;
+        while (duplicatedName) {
+            let i = 0;
+            for (; i < store.idNamePairs.length; i++) {
+                if (store.idNamePairs[i].name == "Untitled" + value) {
+                    value += 1;
                     break;
                 }
             }
-            duplicatedName=i<store.idNamePairs.length;
+            duplicatedName = i < store.idNamePairs.length;
         }
-        let newListName = "Untitled" +value;
-        
-        const response = await api.createPlaylist(newListName, [], auth.user.email, false, [], [], [],new Date().getTime());
+        let newListName = "Untitled" + value;
+
+        const response = await api.createPlaylist(newListName, [], auth.user.email, false, [], [], [], new Date().getTime());
         console.log("createNewList response: " + response);
         if (response.status === 201) {
             tps.clearAllTransactions();
@@ -465,7 +475,7 @@ function GlobalStoreContextProvider(props) {
                     let pairsArray = response.data.idNamePairs;
                     storeReducer({
                         type: GlobalStoreActionType.CREATE_NEW_LIST,
-                        payload: {newIdNamePair:pairsArray,value:value}
+                        payload: { newIdNamePair: pairsArray, value: value }
                     });
                 }
                 else {
@@ -792,35 +802,66 @@ function GlobalStoreContextProvider(props) {
 
     }
     store.copyCurrentList = async function () {
-        let newListName = "Untitled" + store.newListCounter;
-        const response = await api.createPlaylist(store.currentList.name, store.currentList.songs, auth.user.email, false, [], [], [],new Date().getTime());
+        let value = 0;
+        // own code
+        //find the unique default name
+        let duplicatedName = true;
+        while (duplicatedName) {
+            let i = 0;
+            for (; i < store.idNamePairs.length; i++) {
+                if (store.idNamePairs[i].name == "COPY" + value + "-" + store.currentList.name) {
+                    value += 1;
+                    break;
+                }
+            }
+            duplicatedName = i < store.idNamePairs.length;
+        }
+        let newListName = "COPY" + value + "-" + store.currentList.name;
+        const response = await api.createPlaylist(newListName, store.currentList.songs, auth.user.email, false, [], [], [], new Date().getTime());
         console.log("Copy List response: " + response);
         if (response.status === 201) {
             console.log("List is successfully copied");
             // IF IT'S A VALID LIST THEN LET'S START EDITING IT
             // history.push("/playlist/" + newList._id);
+            async function asyncLoadIdNamePairs() {
+                const response = await api.getPlaylistPairs();
+                if (response.data.success) {
+                    let pairsArray = response.data.idNamePairs;
+                    storeReducer({
+                        type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                        payload: pairsArray
+                    });
+                }
+                else {
+                    console.log("API FAILED TO GET THE LIST PAIRS");
+                }
+            }
+            asyncLoadIdNamePairs();
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
         }
     }
-    store.setStoreToDefault = function(){
+
+
+
+    store.setStoreToDefault = function () {
         storeReducer({
-            type:GlobalStoreActionType.DEFAULT_LOGIN_SCREEN,
-            payload:null
+            type: GlobalStoreActionType.DEFAULT_LOGIN_SCREEN,
+            payload: null
         })
     }
 
-    store.searchByCurrentList = function(searchText){
-        let newIdNamePair=[];
-        for(let i=0;i<store.idNamePairs.length;i++){
-            if(store.idNamePairs[i].name.startsWith(searchText)){
+    store.searchByCurrentList = function (searchText) {
+        let newIdNamePair = [];
+        for (let i = 0; i < store.idNamePairs.length; i++) {
+            if (store.idNamePairs[i].name.startsWith(searchText)) {
                 newIdNamePair.push(store.idNamePairs[i]);
             }
         }
         storeReducer({
-            type:GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-            payload:newIdNamePair
+            type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+            payload: newIdNamePair
         })
     }
 
