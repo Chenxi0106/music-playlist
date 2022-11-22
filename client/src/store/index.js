@@ -100,7 +100,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.CLOSE_CURRENT_LIST: {
                 return setStore({
                     currentModal: CurrentModal.NONE,
-                    idNamePairs: payload.pairsArray,
+                    idNamePairs: store.idNamePairs,
                     currentList: null,
                     currentSongIndex: -1,
                     currentSong: null,
@@ -345,7 +345,7 @@ function GlobalStoreContextProvider(props) {
 
     //own code
     // in here, CHANGE_LIST_NAME can be reused
-    store.ChangeUpVoteNumber = function (id,authorName) {
+    store.ChangeUpVoteNumber = function (id, authorName) {
         // GET THE LIST
         async function asyncChangeListName(id) {
             let response = await api.getPlaylistById(id);
@@ -353,17 +353,17 @@ function GlobalStoreContextProvider(props) {
                 let playlist = response.data.playlist;
                 if (playlist.upVote.indexOf(authorName) >= 0) {
                     playlist.upVote.splice(playlist.upVote.indexOf(authorName), 1);
-                    for(let i=0;i<store.idNamePairs.length;i++){
-                        if(store.idNamePairs[i]._id==id){
-                            store.idNamePairs[i].upVote.splice(store.idNamePairs[i].upVote.indexOf(authorName),1);
+                    for (let i = 0; i < store.idNamePairs.length; i++) {
+                        if (store.idNamePairs[i]._id == id) {
+                            store.idNamePairs[i].upVote.splice(store.idNamePairs[i].upVote.indexOf(authorName), 1);
                             break;
                         }
                     }
                 }
                 else {
                     playlist.upVote.push(authorName);
-                    for(let i=0;i<store.idNamePairs.length;i++){
-                        if(store.idNamePairs[i]._id==id){
+                    for (let i = 0; i < store.idNamePairs.length; i++) {
+                        if (store.idNamePairs[i]._id == id) {
                             store.idNamePairs[i].upVote.push(authorName);
                         }
                     }
@@ -372,8 +372,8 @@ function GlobalStoreContextProvider(props) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
                         storeReducer({
-                            type:GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                            payload:store.idNamePairs,
+                            type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                            payload: store.idNamePairs,
                         })
                     }
                 }
@@ -383,7 +383,7 @@ function GlobalStoreContextProvider(props) {
         asyncChangeListName(id);
     }
 
-    store.ChangeDownVoteNumber = function (id,authorName) {
+    store.ChangeDownVoteNumber = function (id, authorName) {
         // GET THE LIST
         async function asyncChangeListName(id) {
             let response = await api.getPlaylistById(id);
@@ -391,17 +391,17 @@ function GlobalStoreContextProvider(props) {
                 let playlist = response.data.playlist;
                 if (playlist.downVote.indexOf(authorName) >= 0) {
                     playlist.downVote.splice(playlist.downVote.indexOf(authorName), 1);
-                    for(let i=0;i<store.idNamePairs.length;i++){
-                        if(store.idNamePairs[i]._id==id){
-                            store.idNamePairs[i].downVote.splice(store.idNamePairs[i].downVote.indexOf(authorName),1);
+                    for (let i = 0; i < store.idNamePairs.length; i++) {
+                        if (store.idNamePairs[i]._id == id) {
+                            store.idNamePairs[i].downVote.splice(store.idNamePairs[i].downVote.indexOf(authorName), 1);
                             break;
                         }
                     }
                 }
                 else {
                     playlist.downVote.push(authorName);
-                    for(let i=0;i<store.idNamePairs.length;i++){
-                        if(store.idNamePairs[i]._id==id){
+                    for (let i = 0; i < store.idNamePairs.length; i++) {
+                        if (store.idNamePairs[i]._id == id) {
                             store.idNamePairs[i].downVote.push(authorName);
                         }
                     }
@@ -410,8 +410,8 @@ function GlobalStoreContextProvider(props) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
                         storeReducer({
-                            type:GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                            payload:store.idNamePairs,
+                            type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                            payload: store.idNamePairs,
                         })
                     }
                 }
@@ -430,20 +430,11 @@ function GlobalStoreContextProvider(props) {
     store.closeCurrentList = function () {
         // store.loadIdNamePairs();
         // directly load the IdNamePairs
-        async function asyncLoadIdNamePairs() {
-            const response = await api.getPlaylistPairs();
-            if (response.data.success) {
-                let pairsArray = response.data.idNamePairs;
-                storeReducer({
-                    type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
-                    payload: { pairsArray }
-                });
-            }
-            else {
-                console.log("API FAILED TO GET THE LIST PAIRS");
-            }
-        }
-        asyncLoadIdNamePairs();
+
+        storeReducer({
+            type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
+            payload: null
+        });
         tps.clearAllTransactions();
         // history.push("/");
     }
@@ -466,7 +457,7 @@ function GlobalStoreContextProvider(props) {
         }
         let newListName = "Untitled" + value;
 
-        const response = await api.createPlaylist(newListName, [], auth.user.email, false, [], [], [], new Date().getTime(),auth.user.firstName+" "+auth.user.lastName,0);
+        const response = await api.createPlaylist(newListName, [], auth.user.email, false, [], [], [], new Date().getTime(), auth.user.firstName + " " + auth.user.lastName, 0);
         console.log("createNewList response: " + response);
         if (response.status === 201) {
             tps.clearAllTransactions();
@@ -818,7 +809,7 @@ function GlobalStoreContextProvider(props) {
             duplicatedName = i < store.idNamePairs.length;
         }
         let newListName = "COPY" + value + "-" + store.currentList.name;
-        const response = await api.createPlaylist(newListName, store.currentList.songs, auth.user.email, false, [], [], [], new Date().getTime(),auth.user.firstName+" "+auth.user.lastName,0);
+        const response = await api.createPlaylist(newListName, store.currentList.songs, auth.user.email, false, [], [], [], new Date().getTime(), auth.user.firstName + " " + auth.user.lastName, 0);
         console.log("Copy List response: " + response);
         if (response.status === 201) {
             console.log("List is successfully copied");
@@ -876,38 +867,39 @@ function GlobalStoreContextProvider(props) {
         return false;
     }
 
-    store.searchByAllList = function(text){
-        async function asyncsearchByAllList(text){
-            let response=await api.getPlaylists();
-            if(response.data.success){
-                let list=response.data.data;
-                let newIdNamePair=[];
-                for(let i=0;i<list.length;i++){
-                    if(list[i].publish&&list[i].name==text){
+    store.searchByAllList = function (text) {
+        async function asyncsearchByAllList(text) {
+            let response = await api.getPlaylists();
+            if (response.data.success) {
+                let list = response.data.data;
+                let newIdNamePair = [];
+                for (let i = 0; i < list.length; i++) {
+                    if (list[i].publish && list[i].name == text) {
                         newIdNamePair.push({
                             _id: list[i]._id,
                             name: list[i].name,
-                            upVote:list[i].upVote,
-                            downVote:list[i].downVote,
-                            publish:list[i].publish,
-                            createTime:list[i].createTime,
-                            authorName:list[i].authorName,
-                            view:list[i].view});
-                    } 
-                } 
+                            upVote: list[i].upVote,
+                            downVote: list[i].downVote,
+                            publish: list[i].publish,
+                            createTime: list[i].createTime,
+                            authorName: list[i].authorName,
+                            view: list[i].view
+                        });
+                    }
+                }
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                     payload: newIdNamePair
-                });           
+                });
             }
-            else{
+            else {
                 console.log("FAIL TO GET THE LIST");
             }
         }
         asyncsearchByAllList(text);
 
     }
-    store.searchByUserName =function(){
+    store.searchByUserName = function () {
 
     }
 

@@ -16,6 +16,7 @@ import ContentCopy from '@mui/icons-material/ContentCopy';
 import Sort from '@mui/icons-material/Sort';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { breakpoints } from '@mui/system';
 
 
 /*
@@ -95,6 +96,12 @@ function EditToolbar() {
     //own code
     function handlePublishList() {
         store.currentList.publish = true;
+        for(let i=0;i<store.idNamePairs.length;i++){
+            if(store.idNamePairs[i]._id==store.currentList._id){
+                store.idNamePairs[i].publish=true;
+                break;
+            }
+        }
         store.updateCurrentList();
     }
     function handleCopyContent() {
