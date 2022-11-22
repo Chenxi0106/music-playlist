@@ -62,10 +62,10 @@ function ListCard(props) {
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            if(store.isNameDuplicate(text)){
+            if (store.isNameDuplicate(text)) {
                 toggleEdit();
             }
-            else{
+            else {
                 let id = event.target.id.substring("list-".length);
                 store.changeListName(id, text);
                 toggleEdit();
@@ -82,12 +82,12 @@ function ListCard(props) {
         store.changeSelectSession(id);
 
     }
-    function handleChangeUpvoteNumber(event,id){
+    function handleChangeUpvoteNumber(event, id) {
         event.stopPropagation();
         store.ChangeUpVoteNumber(id);
     }
 
-    function handleChangeDownVoteNumber(event,id){
+    function handleChangeDownVoteNumber(event, id) {
         event.stopPropagation();
         store.ChangeDownVoteNumber(id);
     }
@@ -103,7 +103,7 @@ function ListCard(props) {
         cardStatus = true;
     }
 
-    let cardElement = store.sessionSelectedList!=null&&store.sessionSelectedList._id == idNamePair._id ?
+    let cardElement = store.sessionSelectedList != null && store.sessionSelectedList._id == idNamePair._id ?
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
@@ -114,16 +114,26 @@ function ListCard(props) {
                 handleLoadList(event, idNamePair._id)
             }}
         >
-            <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name} <div style={{fontSize:'12pt'}}>{new Date(idNamePair.createTime).toString().split("GMT")[0]}</div></Box>
-            
+            <Box sx={{ p: 1, flexGrow: 1 }}>
+                {idNamePair.name}
+                <div style={{ fontSize: '12pt' }}>
+                    {new Date(idNamePair.createTime).toString().split("GMT")[0]}
+                </div>
+                <div style={{ fontSize: '12pt' }}>
+                    by:{idNamePair.authorName}
+                </div>
+                <div style={{ fontSize: '12pt' }}>
+                    view:{idNamePair.view}
+                </div>
+            </Box>
             <Box sx={{ p: 1 }}>
-                <IconButton aria-label='edit' onClick={(event) => {handleChangeUpvoteNumber(event, idNamePair._id)}}>
+                <IconButton aria-label='edit' onClick={(event) => { handleChangeUpvoteNumber(event, idNamePair._id) }}>
                     <ThumbUp style={{ fontSize: '20pt' }} />
                 </IconButton>
                 <span id="thumbUp-count">{idNamePair.upVote.length}</span>
             </Box>
             <Box sx={{ p: 1 }}>
-                <IconButton onClick={(event) => {handleChangeDownVoteNumber(event, idNamePair._id)}} aria-label='edit'>
+                <IconButton onClick={(event) => { handleChangeDownVoteNumber(event, idNamePair._id) }} aria-label='edit'>
                     <ThumbDown style={{ fontSize: '20pt' }} />
                 </IconButton>
                 <span id="thumbDown-count">{idNamePair.downVote.length}</span>
@@ -149,98 +159,120 @@ function ListCard(props) {
                 </IconButton>
             </Box>
         </ListItem>
-        :idNamePair.publish?
-        <ListItem
-        id={idNamePair._id}
-        key={idNamePair._id}
-        sx={{ marginTop: '15px', display: 'flex', p: 1 }}
-        style={{ width: '100%', fontSize: '25pt' }}
-        button
-        onClick={(event) => {
-            handleLoadList(event, idNamePair._id)
-        }}
-    >
-        <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name} <div style={{fontSize:'12pt'}}>{new Date(idNamePair.createTime).toString().split("GMT")[0]}</div></Box>
-        <Box sx={{ p: 1 }}>
-            <IconButton onClick={(event) => {handleChangeUpvoteNumber(event, idNamePair._id)}} aria-label='edit'>
-                <ThumbUp style={{ fontSize: '20pt' }} />
-            </IconButton>
-            <span id="thumbUp-count">{idNamePair.upVote.length}</span>
-        </Box>
-        <Box sx={{ p: 1 }}>
-            <IconButton onClick={(event) => {handleChangeDownVoteNumber(event, idNamePair._id)}} aria-label='edit'>
-                <ThumbDown style={{ fontSize: '20pt' }} />
-            </IconButton>
-            <span id="thumbDown-count">{idNamePair.downVote.length}</span>
-        </Box>
+        : idNamePair.publish ?
+            <ListItem
+                id={idNamePair._id}
+                key={idNamePair._id}
+                sx={{ marginTop: '15px', display: 'flex', p: 1 }}
+                style={{ width: '100%', fontSize: '25pt' }}
+                button
+                onClick={(event) => {
+                    handleLoadList(event, idNamePair._id)
+                }}
+            >
+                <Box sx={{ p: 1, flexGrow: 1 }}>
+                    {idNamePair.name}
+                    <div style={{ fontSize: '12pt' }}>
+                        {new Date(idNamePair.createTime).toString().split("GMT")[0]}
+                    </div>
+                    <div style={{ fontSize: '12pt' }}>
+                        by:{idNamePair.authorName}
+                    </div>
+                    <div style={{ fontSize: '12pt' }}>
+                        view:{idNamePair.view}
+                    </div>
+                </Box>
+                <Box sx={{ p: 1 }}>
+                    <IconButton onClick={(event) => { handleChangeUpvoteNumber(event, idNamePair._id) }} aria-label='edit'>
+                        <ThumbUp style={{ fontSize: '20pt' }} />
+                    </IconButton>
+                    <span id="thumbUp-count">{idNamePair.upVote.length}</span>
+                </Box>
+                <Box sx={{ p: 1 }}>
+                    <IconButton onClick={(event) => { handleChangeDownVoteNumber(event, idNamePair._id) }} aria-label='edit'>
+                        <ThumbDown style={{ fontSize: '20pt' }} />
+                    </IconButton>
+                    <span id="thumbDown-count">{idNamePair.downVote.length}</span>
+                </Box>
 
-        <Box sx={{ p: 1 }}>
-            <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                <EditIcon style={{ fontSize: '20pt' }} />
-            </IconButton>
-        </Box>
-        <Box sx={{ p: 1 }}>
-            <IconButton onClick={(event) => {
-                handleDeleteList(event, idNamePair._id)
-            }} aria-label='delete'>
-                <DeleteIcon style={{ fontSize: '20pt' }} />
-            </IconButton>
-        </Box>
-        <Box sx={{ p: 1 }}>
-            <IconButton onClick={(event) => {
-                handleClickSelectedSong(event, idNamePair._id)
-            }}>
-                <QueueMusic style={{ fontSize: '20pt' }}></QueueMusic>
-            </IconButton>
-        </Box>
-    </ListItem>
-    //list is not selected but published
-    :
-    <ListItem
-    id={idNamePair._id}
-    key={idNamePair._id}
-    sx={{ marginTop: '15px', display: 'flex', p: 1 }}
-    style={{ width: '100%', fontSize: '25pt', backgroundColor: '#eeeedd' }}
-    button
-    onClick={(event) => {
-        handleLoadList(event, idNamePair._id)
-    }}
->
-    <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name} <div style={{fontSize:'12pt'}}>{new Date(idNamePair.createTime).toString().split("GMT")[0]}</div></Box>
-    <Box sx={{ p: 1 }}>
-        <IconButton onClick={(event) => {handleChangeUpvoteNumber(event, idNamePair._id)}} aria-label='edit'>
-            <ThumbUp style={{ fontSize: '20pt' }} />
-        </IconButton>
-        <span id="thumbUp-count">{idNamePair.upVote.length}</span>
-    </Box>
-    <Box sx={{ p: 1 }}>
-        <IconButton onClick={(event) => {handleChangeDownVoteNumber(event, idNamePair._id)}} aria-label='edit'>
-            <ThumbDown style={{ fontSize: '20pt' }} />
-        </IconButton>
-        <span id="thumbDown-count">{idNamePair.downVote.length}</span>
-    </Box>
+                <Box sx={{ p: 1 }}>
+                    <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                        <EditIcon style={{ fontSize: '20pt' }} />
+                    </IconButton>
+                </Box>
+                <Box sx={{ p: 1 }}>
+                    <IconButton onClick={(event) => {
+                        handleDeleteList(event, idNamePair._id)
+                    }} aria-label='delete'>
+                        <DeleteIcon style={{ fontSize: '20pt' }} />
+                    </IconButton>
+                </Box>
+                <Box sx={{ p: 1 }}>
+                    <IconButton onClick={(event) => {
+                        handleClickSelectedSong(event, idNamePair._id)
+                    }}>
+                        <QueueMusic style={{ fontSize: '20pt' }}></QueueMusic>
+                    </IconButton>
+                </Box>
+            </ListItem>
+            //list is not selected but published
+            :
+            <ListItem
+                id={idNamePair._id}
+                key={idNamePair._id}
+                sx={{ marginTop: '15px', display: 'flex', p: 1 }}
+                style={{ width: '100%', fontSize: '25pt', backgroundColor: '#eeeedd' }}
+                button
+                onClick={(event) => {
+                    handleLoadList(event, idNamePair._id)
+                }}
+            >
+                <Box sx={{ p: 1, flexGrow: 1 }}>
+                    {idNamePair.name}
+                    <div style={{ fontSize: '12pt' }}>
+                        {new Date(idNamePair.createTime).toString().split("GMT")[0]}
+                    </div>
+                    <div style={{ fontSize: '12pt' }}>
+                        by:{idNamePair.authorName}
+                    </div>
+                    <div style={{ fontSize: '12pt' }}>
+                        view:{idNamePair.view}
+                    </div>
+                </Box>
+                <Box sx={{ p: 1 }}>
+                    <IconButton onClick={(event) => { handleChangeUpvoteNumber(event, idNamePair._id) }} aria-label='edit'>
+                        <ThumbUp style={{ fontSize: '20pt' }} />
+                    </IconButton>
+                    <span id="thumbUp-count">{idNamePair.upVote.length}</span>
+                </Box>
+                <Box sx={{ p: 1 }}>
+                    <IconButton onClick={(event) => { handleChangeDownVoteNumber(event, idNamePair._id) }} aria-label='edit'>
+                        <ThumbDown style={{ fontSize: '20pt' }} />
+                    </IconButton>
+                    <span id="thumbDown-count">{idNamePair.downVote.length}</span>
+                </Box>
 
-    <Box sx={{ p: 1 }}>
-        <IconButton onClick={handleToggleEdit} aria-label='edit'>
-            <EditIcon style={{ fontSize: '20pt' }} />
-        </IconButton>
-    </Box>
-    <Box sx={{ p: 1 }}>
-        <IconButton onClick={(event) => {
-            handleDeleteList(event, idNamePair._id)
-        }} aria-label='delete'>
-            <DeleteIcon style={{ fontSize: '20pt' }} />
-        </IconButton>
-    </Box>
-    <Box sx={{ p: 1 }}>
-        <IconButton onClick={(event) => {
-            handleClickSelectedSong(event, idNamePair._id)
-        }}>
-            <QueueMusic style={{ fontSize: '20pt' }}></QueueMusic>
-        </IconButton>
-    </Box>
-</ListItem>
-//list is not publish
+                <Box sx={{ p: 1 }}>
+                    <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                        <EditIcon style={{ fontSize: '20pt' }} />
+                    </IconButton>
+                </Box>
+                <Box sx={{ p: 1 }}>
+                    <IconButton onClick={(event) => {
+                        handleDeleteList(event, idNamePair._id)
+                    }} aria-label='delete'>
+                        <DeleteIcon style={{ fontSize: '20pt' }} />
+                    </IconButton>
+                </Box>
+                <Box sx={{ p: 1 }}>
+                    <IconButton onClick={(event) => {
+                        handleClickSelectedSong(event, idNamePair._id)
+                    }}>
+                        <QueueMusic style={{ fontSize: '20pt' }}></QueueMusic>
+                    </IconButton>
+                </Box>
+            </ListItem>
+    //list is not publish
 
 
 

@@ -465,7 +465,7 @@ function GlobalStoreContextProvider(props) {
         }
         let newListName = "Untitled" + value;
 
-        const response = await api.createPlaylist(newListName, [], auth.user.email, false, [], [], [], new Date().getTime());
+        const response = await api.createPlaylist(newListName, [], auth.user.email, false, [], [], [], new Date().getTime(),auth.user.firstName+" "+auth.user.lastName,0);
         console.log("createNewList response: " + response);
         if (response.status === 201) {
             tps.clearAllTransactions();
@@ -817,7 +817,7 @@ function GlobalStoreContextProvider(props) {
             duplicatedName = i < store.idNamePairs.length;
         }
         let newListName = "COPY" + value + "-" + store.currentList.name;
-        const response = await api.createPlaylist(newListName, store.currentList.songs, auth.user.email, false, [], [], [], new Date().getTime());
+        const response = await api.createPlaylist(newListName, store.currentList.songs, auth.user.email, false, [], [], [], new Date().getTime(),auth.user.firstName+" "+auth.user.lastName,0);
         console.log("Copy List response: " + response);
         if (response.status === 201) {
             console.log("List is successfully copied");
