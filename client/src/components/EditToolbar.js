@@ -172,13 +172,13 @@ function EditToolbar() {
         :
         <Stack spacing={2} direction="row" justifyContent="center" >
             <Button
-                color="inherit"
+                color={store.onSearchButton=="SEARCH_BY_CURRENT_LIST"?"primary":"inherit"}
                 onClick={searchByCurrentList}
                 variant="contained">
                 <Home />
             </Button>
             <Button
-                color="inherit"
+                color={store.onSearchButton=="SEARCH_BY_ALL_LIST"?"primary":"inherit"}
                 onClick={searchByAllList}
                 variant="contained">
                 <People />

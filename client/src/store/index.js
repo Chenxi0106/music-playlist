@@ -64,7 +64,8 @@ function GlobalStoreContextProvider(props) {
         //own code
         sessionState: null,
         sessionSelectedList: null,
-        currentVideo: null
+        currentVideo: null,
+        onSearchButton:null,
     });
     const history = useHistory();
 
@@ -93,7 +94,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     sessionState: store.sessionState,
                     sessionSelectedList: store.sessionSelectedList,
-                    currentVideo: store.currentVideo
+                    currentVideo: store.currentVideo,
+                    onSearchButton:store.onSearchButton,
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -110,7 +112,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     sessionState: store.sessionState,
                     sessionSelectedList: store.sessionSelectedList,
-                    currentVideo: store.currentVideo
+                    currentVideo: store.currentVideo,
+                    onSearchButton:store.onSearchButton,
                 })
             }
             // CREATE A NEW LIST
@@ -127,14 +130,15 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     sessionState: store.sessionState,
                     sessionSelectedList: store.sessionSelectedList,
-                    currentVideo: store.currentVideo
+                    currentVideo: store.currentVideo,
+                    onSearchButton:store.onSearchButton,
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
             case GlobalStoreActionType.LOAD_ID_NAME_PAIRS: {
                 return setStore({
                     currentModal: CurrentModal.NONE,
-                    idNamePairs: payload,
+                    idNamePairs: payload.list,
                     currentList: store.currentList,
                     currentSongIndex: -1,
                     currentSong: null,
@@ -144,7 +148,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     sessionState: store.sessionState,
                     sessionSelectedList: store.sessionSelectedList,
-                    currentVideo: store.currentVideo
+                    currentVideo: store.currentVideo,
+                    onSearchButton:payload.state
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -161,7 +166,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: payload.playlist,
                     sessionState: store.sessionState,
                     sessionSelectedList: store.sessionSelectedList,
-                    currentVideo: store.currentVideo
+                    currentVideo: store.currentVideo,
+                    onSearchButton:store.onSearchButton,
                 });
             }
             // UPDATE A LIST
@@ -178,7 +184,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     sessionState: store.sessionState,
                     sessionSelectedList: store.sessionSelectedList,
-                    currentVideo: store.currentVideo
+                    currentVideo: store.currentVideo,
+                    onSearchButton:store.onSearchButton,
                 });
             }
             // START EDITING A LIST NAME
@@ -195,7 +202,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     sessionState: store.sessionState,
                     sessionSelectedList: store.sessionSelectedList,
-                    currentVideo: store.currentVideo
+                    currentVideo: store.currentVideo,
+                    onSearchButton:store.onSearchButton,
                 });
             }
             // 
@@ -212,7 +220,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     sessionState: store.sessionState,
                     sessionSelectedList: store.sessionSelectedList,
-                    currentVideo: store.currentVideo
+                    currentVideo: store.currentVideo,
+                    onSearchButton:store.onSearchButton,
                 });
             }
             case GlobalStoreActionType.REMOVE_SONG: {
@@ -228,7 +237,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     sessionState: store.sessionState,
                     sessionSelectedList: store.sessionSelectedList,
-                    currentVideo: store.currentVideo
+                    currentVideo: store.currentVideo,
+                    onSearchButton:store.onSearchButton,
                 });
             }
             case GlobalStoreActionType.HIDE_MODALS: {
@@ -244,7 +254,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     sessionState: store.sessionState,
                     sessionSelectedList: store.sessionSelectedList,
-                    currentVideo: store.currentVideo
+                    currentVideo: store.currentVideo,
+                    onSearchButton:store.onSearchButton,
                 });
             }
             //own code
@@ -262,7 +273,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: store.listMarkedForDeletion,
                     sessionState: payload.state,
                     sessionSelectedList: payload.list,
-                    currentVideo: store.currentVideo
+                    currentVideo: store.currentVideo,
+                    onSearchButton:store.onSearchButton,
                 });
             }
             case GlobalStoreActionType.UPDATE_CURRENT_PLAYER: {
@@ -278,7 +290,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: store.listMarkedForDeletion,
                     sessionState: store.sessionState,
                     sessionSelectedList: store.sessionSelectedList,
-                    currentVideo: payload.video
+                    currentVideo: payload.video,
+                    onSearchButton:store.onSearchButton,
 
                 });
             }
@@ -297,7 +310,8 @@ function GlobalStoreContextProvider(props) {
                     //own code
                     sessionState: null,
                     sessionSelectedList: null,
-                    currentVideo: null
+                    currentVideo: null,
+                    onSearchButton:null,
                 })
             }
 
@@ -373,7 +387,7 @@ function GlobalStoreContextProvider(props) {
                     if (response.data.success) {
                         storeReducer({
                             type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                            payload: store.idNamePairs,
+                            payload: {list:store.idNamePairs,state:store.onSearchButton},
                         })
                     }
                 }
@@ -411,7 +425,7 @@ function GlobalStoreContextProvider(props) {
                     if (response.data.success) {
                         storeReducer({
                             type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                            payload: store.idNamePairs,
+                            payload: {list:store.idNamePairs,state:store.onSearchButton}
                         })
                     }
                 }
@@ -492,7 +506,7 @@ function GlobalStoreContextProvider(props) {
                 let pairsArray = response.data.idNamePairs;
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                    payload: pairsArray
+                    payload: {list:pairsArray,state:null}
                 });
             }
             else {
@@ -821,7 +835,7 @@ function GlobalStoreContextProvider(props) {
                     let pairsArray = response.data.idNamePairs;
                     storeReducer({
                         type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                        payload: pairsArray
+                        payload: {list:pairsArray,state:store.onSearchButton}
                     });
                 }
                 else {
@@ -853,7 +867,7 @@ function GlobalStoreContextProvider(props) {
         }
         storeReducer({
             type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-            payload: newIdNamePair
+            payload: {list:newIdNamePair,state:"SEARCH_BY_CURRENT_LIST"}
         })
     }
 
@@ -889,7 +903,7 @@ function GlobalStoreContextProvider(props) {
                 }
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                    payload: newIdNamePair
+                    payload: {list:newIdNamePair,state:"SEARCH_BY_ALL_LIST"}
                 });
             }
             else {
@@ -902,6 +916,8 @@ function GlobalStoreContextProvider(props) {
     store.searchByUserName = function () {
 
     }
+
+
 
 
 

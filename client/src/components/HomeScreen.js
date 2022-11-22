@@ -59,7 +59,7 @@ const HomeScreen = () => {
                 <div id="list-selector-heading">
                 </div>
                 <Fab
-                    disabled={auth.loginAsGuest}
+                    disabled={auth.loginAsGuest||store.onSearchButton!=null}
                     color="inherit"
                     aria-label="add"
                     id="add-list-button"
