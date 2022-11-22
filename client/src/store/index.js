@@ -135,7 +135,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     currentModal: CurrentModal.NONE,
                     idNamePairs: payload,
-                    currentList: null,
+                    currentList: store.currentList,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -863,6 +863,16 @@ function GlobalStoreContextProvider(props) {
             type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
             payload: newIdNamePair
         })
+    }
+
+    store.isNameDuplicate = function (name) {
+        let i = 0;
+        for (; i < store.idNamePairs.length; i++) {
+            if (store.idNamePairs[i].name == name) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

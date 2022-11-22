@@ -62,9 +62,14 @@ function ListCard(props) {
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            let id = event.target.id.substring("list-".length);
-            store.changeListName(id, text);
-            toggleEdit();
+            if(store.isNameDuplicate(text)){
+                toggleEdit();
+            }
+            else{
+                let id = event.target.id.substring("list-".length);
+                store.changeListName(id, text);
+                toggleEdit();
+            }
         }
     }
     function handleUpdateText(event) {
