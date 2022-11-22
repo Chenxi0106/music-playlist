@@ -77,7 +77,7 @@ function EditToolbar() {
         store.searchByAllList(searchText);
     }
     function searchByUserName() {
-        store.searchByUserName();
+        store.searchByUserName(searchText);
     }
 
     function handleAddNewSong() {
@@ -184,7 +184,7 @@ function EditToolbar() {
                 <People />
             </Button>
             <Button
-                color="inherit"
+                color={store.onSearchButton=="SEARCH_BY_USER_NAME"?"primary":"inherit"}
                 onClick={searchByUserName}
                 variant="contained">
                 <Person />

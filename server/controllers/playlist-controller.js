@@ -74,7 +74,7 @@ deletePlaylistById = async (req, res) => {
                                 console.log("correct user!");
                                 Playlist.findOneAndDelete({ _id: req.params.id }, () => {
                                     return res.status(200).json({
-                                        success:true
+                                        success: true
                                     });
                                 }).catch(err => console.log(err))
                             }
@@ -184,13 +184,13 @@ getPlaylistPairs = async (req, res) => {
                         let pair = {
                             _id: list._id,
                             name: list.name,
-                            upVote:list.upVote,
-                            downVote:list.downVote,
-                            publish:list.publish,
-                            createTime:list.createTime,
-                            authorName:list.authorName,
-                            view:list.view,
-                            
+                            upVote: list.upVote,
+                            downVote: list.downVote,
+                            publish: list.publish,
+                            createTime: list.createTime,
+                            authorName: list.authorName,
+                            view: list.view,
+
                         };
                         pairs.push(pair);
                     }
@@ -237,33 +237,33 @@ updatePlaylist = async (req, res) => {
         }
         console.log("correct user!");
         console.log("req.body.name: " + req.body.name);
-        let list=playlist;
+        let list = playlist;
         list.name = body.playlist.name;
         list.songs = body.playlist.songs;
-        list.publish=body.playlist.publish;
-        list.comments=body.playlist.comments;
-        list.upVote=body.playlist.upVote;
-        list.downVote=body.playlist.downVote;
-        list.authorName=body.playlist.authorName,
-        list.view=body.playlist.view,
-        list
-            .save()
-            .then(() => {
-                console.log("SUCCESS!!!");
-                return res.status(200).json({
-                    success: true,
-                    id: list._id,
-                    message: 'Playlist updated!',
+        list.publish = body.playlist.publish;
+        list.comments = body.playlist.comments;
+        list.upVote = body.playlist.upVote;
+        list.downVote = body.playlist.downVote;
+        list.authorName = body.playlist.authorName,
+            list.view = body.playlist.view,
+            list
+                .save()
+                .then(() => {
+                    console.log("SUCCESS!!!");
+                    return res.status(200).json({
+                        success: true,
+                        id: list._id,
+                        message: 'Playlist updated!',
+                    })
                 })
-            })
-            .catch(error => {
-                console.log("FAILURE: " + JSON.stringify(error));
-                return res.status(404).json({
-                    error,
-                    message: 'Playlist not updated!',
+                .catch(error => {
+                    console.log("FAILURE: " + JSON.stringify(error));
+                    return res.status(404).json({
+                        error,
+                        message: 'Playlist not updated!',
+                    })
                 })
-            })
-        
+
 
         // // DOES THIS LIST BELONG TO THIS USER?
         // async function asyncFindUser(list) {
@@ -312,6 +312,7 @@ updatePlaylist = async (req, res) => {
 }
 
 
+
 module.exports = {
     createPlaylist,
     deletePlaylist,
@@ -320,4 +321,5 @@ module.exports = {
     getPlaylists,
     updatePlaylist,
     deletePlaylistById,
+   
 }

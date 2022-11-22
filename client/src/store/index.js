@@ -913,8 +913,36 @@ function GlobalStoreContextProvider(props) {
         asyncsearchByAllList(text);
 
     }
-    store.searchByUserName = function () {
-
+    store.searchByUserName = function (text) {
+        async function asyncsearchByUserName(text) {
+            let response = await api.getPlaylists();
+            if (response.data.success) {
+                let list = response.data.data;
+                let newIdNamePair = [];
+                for (let i = 0; i < list.length; i++) {
+                    if (list[i].publish && list[i].authorName == text) {
+                        newIdNamePair.push({
+                            _id: list[i]._id,
+                            name: list[i].name,
+                            upVote: list[i].upVote,
+                            downVote: list[i].downVote,
+                            publish: list[i].publish,
+                            createTime: list[i].createTime,
+                            authorName: list[i].authorName,
+                            view: list[i].view
+                        });
+                    }
+                }
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                    payload: {list:newIdNamePair,state:"SEARCH_BY_USER_NAME"}
+                });
+            }
+            else {
+                console.log("FAIL TO GET THE LIST");
+            }
+        }
+        asyncsearchByUserName(text);
     }
 
 
