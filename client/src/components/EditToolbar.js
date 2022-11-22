@@ -102,6 +102,9 @@ function EditToolbar() {
                 break;
             }
         }
+        if(store.sessionSelectedList!=null&&store.currentList._id==store.sessionSelectedList._id){
+            store.sessionSelectedList.publish=true;
+        }
         store.updateCurrentList();
     }
     function handleCopyContent() {

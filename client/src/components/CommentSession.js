@@ -30,8 +30,8 @@ export default function CommentSession() {
     return (
             <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                 <div id='chat-input-box'>
-                    <TextField id="outlined" style={{ width: '85%' }}  onChange={handleUpdateComment} disabled={store.sessionSelectedList==null||auth.loginAsGuest}/>
-                    <Fab color="inherit" aria-label="add" onClick={handleSendComment} disabled={store.sessionSelectedList==null||auth.loginAsGuest}><SendIcon /></Fab>
+                    <TextField id="outlined" style={{ width: '85%' }}  onChange={handleUpdateComment} disabled={store.sessionSelectedList==null||auth.loginAsGuest||!store.sessionSelectedList.publish}/>
+                    <Fab color="inherit" aria-label="add" onClick={handleSendComment} disabled={store.sessionSelectedList==null||auth.loginAsGuest||!store.sessionSelectedList.publish}><SendIcon /></Fab>
                 </div>
                 <Divider component="li">Comments:</Divider>
                 {res}
