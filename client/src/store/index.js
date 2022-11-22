@@ -735,8 +735,8 @@ function GlobalStoreContextProvider(props) {
     store.updateCurrentList = function () {
         async function asyncUpdateCurrentList() {
             const response = await api.updatePlaylistById(store.currentList._id, store.currentList);
-            if(store.sessionSelectedList!=null&&store.currentList._id==store.sessionSelectedList._id){
-                store.sessionSelectedList=store.currentList;
+            if (store.sessionSelectedList != null && store.currentList._id == store.sessionSelectedList._id) {
+                store.sessionSelectedList = store.currentList;
             }
             if (response.data.success) {
                 storeReducer({
@@ -781,9 +781,9 @@ function GlobalStoreContextProvider(props) {
         return !store.currentList.publish;
     }
     store.changeSessionState = function (state, list) {
-        if (state== 'Player' && list!=null) {
-            store.sessionState=state;
-            store.sessionSelectedList=list;
+        if (state == 'Player' && list != null) {
+            store.sessionState = state;
+            store.sessionSelectedList = list;
             store.sessionSelectedList.view += 1;
             async function asyncUpdateCurrentList() {
                 const response = await api.updatePlaylistById(store.sessionSelectedList._id, store.sessionSelectedList);
@@ -804,10 +804,10 @@ function GlobalStoreContextProvider(props) {
             }
             asyncUpdateCurrentList();
         }
-        else{
+        else {
             storeReducer({
-                type:GlobalStoreActionType.CHANGE_SESSION_STATE,
-                payload:{state:state,list:list},
+                type: GlobalStoreActionType.CHANGE_SESSION_STATE,
+                payload: { state: state, list: list },
             })
         }
     }
@@ -859,20 +859,24 @@ function GlobalStoreContextProvider(props) {
             console.log("List is successfully copied");
             // IF IT'S A VALID LIST THEN LET'S START EDITING IT
             // history.push("/playlist/" + newList._id);
-            async function asyncLoadIdNamePairs() {
-                const response = await api.getPlaylistPairs();
-                if (response.data.success) {
-                    let pairsArray = response.data.idNamePairs;
-                    storeReducer({
-                        type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                        payload: { list: pairsArray, state: store.onSearchButton }
-                    });
+            //if the idNamePair belongs to the user, then add that in
+            if (store.onSearchButton == null) {
+                async function asyncLoadIdNamePairs() {
+                    const response = await api.getPlaylistPairs();
+                    if (response.data.success) {
+                        let pairsArray = response.data.idNamePairs;
+                        storeReducer({
+                            type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                            payload: { list: pairsArray, state: store.onSearchButton }
+                        });
+                    }
+                    else {
+                        console.log("API FAILED TO GET THE LIST PAIRS");
+                    }
                 }
-                else {
-                    console.log("API FAILED TO GET THE LIST PAIRS");
-                }
+                asyncLoadIdNamePairs();
+
             }
-            asyncLoadIdNamePairs();
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
