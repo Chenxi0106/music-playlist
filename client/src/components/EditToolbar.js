@@ -17,6 +17,7 @@ import Sort from '@mui/icons-material/Sort';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
+
 /*
     This toolbar is a functional React component that
     manages the undo/redo/close buttons.
@@ -71,8 +72,8 @@ function EditToolbar() {
     function searchByCurrentList() {
         store.searchByCurrentList(searchText);
     }
-    function searchByLoginList() {
-        store.searchByLoginList();
+    function searchByAllList() {
+        store.searchByAllList(searchText);
     }
     function searchByUserName() {
         store.searchByUserName();
@@ -171,7 +172,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                onClick={searchByLoginList}
+                onClick={searchByAllList}
                 variant="contained">
                 <People />
             </Button>

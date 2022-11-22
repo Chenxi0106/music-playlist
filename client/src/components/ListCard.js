@@ -9,6 +9,8 @@ import TextField from '@mui/material/TextField';
 import QueueMusic from '@mui/icons-material/QueueMusic';
 import ThumbUp from '@mui/icons-material/ThumbUp';
 import ThumbDown from '@mui/icons-material/ThumbDown';
+import AuthContext from '../auth';
+
 
 
 
@@ -24,6 +26,9 @@ function ListCard(props) {
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const { idNamePair, selected } = props;
+
+    //own code
+    const { auth } = useContext(AuthContext);
 
     function handleLoadList(event, id) {
         console.log("handleLoadList for " + id);
@@ -84,12 +89,12 @@ function ListCard(props) {
     }
     function handleChangeUpvoteNumber(event, id) {
         event.stopPropagation();
-        store.ChangeUpVoteNumber(id);
+        store.ChangeUpVoteNumber(id,auth.user.firstName+" "+auth.user.lastName);
     }
 
     function handleChangeDownVoteNumber(event, id) {
         event.stopPropagation();
-        store.ChangeDownVoteNumber(id);
+        store.ChangeDownVoteNumber(id,auth.user.firstName+" "+auth.user.lastName);
     }
 
 
@@ -140,14 +145,18 @@ function ListCard(props) {
             </Box>
 
             <Box sx={{ p: 1 }}>
-                <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                <IconButton onClick={handleToggleEdit} aria-label='edit'
+                disabled={auth.user.firstName+' '+auth.user.lastName!=idNamePair.authorName}
+                >
                     <EditIcon style={{ fontSize: '20pt' }} />
                 </IconButton>
             </Box>
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={(event) => {
                     handleDeleteList(event, idNamePair._id)
-                }} aria-label='delete'>
+                }} aria-label='delete'
+                disabled={auth.user.firstName+' '+auth.user.lastName!=idNamePair.authorName}
+                >
                     <DeleteIcon style={{ fontSize: '20pt' }} />
                 </IconButton>
             </Box>
@@ -196,14 +205,18 @@ function ListCard(props) {
                 </Box>
 
                 <Box sx={{ p: 1 }}>
-                    <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                    <IconButton onClick={handleToggleEdit} aria-label='edit'
+                    disabled={auth.user.firstName+' '+auth.user.lastName!=idNamePair.authorName}
+                    >
                         <EditIcon style={{ fontSize: '20pt' }} />
                     </IconButton>
                 </Box>
                 <Box sx={{ p: 1 }}>
                     <IconButton onClick={(event) => {
                         handleDeleteList(event, idNamePair._id)
-                    }} aria-label='delete'>
+                    }} aria-label='delete'
+                    disabled={auth.user.firstName+' '+auth.user.lastName!=idNamePair.authorName}
+                    >
                         <DeleteIcon style={{ fontSize: '20pt' }} />
                     </IconButton>
                 </Box>
@@ -253,14 +266,18 @@ function ListCard(props) {
                 </Box>
 
                 <Box sx={{ p: 1 }}>
-                    <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                    <IconButton onClick={handleToggleEdit} aria-label='edit'
+                    disabled={auth.user.firstName+' '+auth.user.lastName!=idNamePair.authorName}
+                    >
                         <EditIcon style={{ fontSize: '20pt' }} />
                     </IconButton>
                 </Box>
                 <Box sx={{ p: 1 }}>
                     <IconButton onClick={(event) => {
                         handleDeleteList(event, idNamePair._id)
-                    }} aria-label='delete'>
+                    }} aria-label='delete'
+                    disabled={auth.user.firstName+' '+auth.user.lastName!=idNamePair.authorName}
+                    >
                         <DeleteIcon style={{ fontSize: '20pt' }} />
                     </IconButton>
                 </Box>

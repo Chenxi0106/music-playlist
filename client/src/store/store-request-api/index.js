@@ -31,7 +31,8 @@ export const updatePlaylistById = (id, playlist) => {
         playlist : playlist
     })
 }
-
+export const getPlaylists=()=>api.get('/playlists')
+// router.get('/playlists', auth.verify, PlaylistController.getPlaylists)
 
 
 const apis = {
@@ -40,6 +41,7 @@ const apis = {
     getPlaylistById,
     getPlaylistPairs,
     updatePlaylistById,
+    getPlaylists
 
 }
 
