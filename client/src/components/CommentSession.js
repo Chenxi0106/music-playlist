@@ -7,10 +7,12 @@ import TextField from '@mui/material/TextField';
 import Fab from '@mui/material/Fab'
 import SendIcon from '@mui/icons-material/Send';
 import Divider from '@mui/material/Divider';
+import AuthContext from '../auth';
 
 export default function CommentSession() {
     const { store } = useContext(GlobalStoreContext);
     const [comment, setComment ] = useState("");
+    const { auth } = useContext(AuthContext);
     let res = store.sessionSelectedList == null ? <div></div> : store.sessionSelectedList.comments.map((comment, index) => (
         <Comment
             comment={comment}
@@ -28,8 +30,8 @@ export default function CommentSession() {
     return (
             <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                 <div id='chat-input-box'>
-                    <TextField id="outlined" style={{ width: '85%' }}  onChange={handleUpdateComment} disabled={store.sessionSelectedList==null}/>
-                    <Fab color="inherit" aria-label="add" onClick={handleSendComment} disabled={store.sessionSelectedList==null}><SendIcon /></Fab>
+                    <TextField id="outlined" style={{ width: '85%' }}  onChange={handleUpdateComment} disabled={store.sessionSelectedList==null||auth.loginAsGuest}/>
+                    <Fab color="inherit" aria-label="add" onClick={handleSendComment} disabled={store.sessionSelectedList==null||auth.loginAsGuest}><SendIcon /></Fab>
                 </div>
                 <Divider component="li">Comments:</Divider>
                 {res}

@@ -1,13 +1,16 @@
 import React, { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 import DeleteIcon from '@mui/icons-material/Delete';
-import Box from '@mui/material/Box';
+import AuthContext from '../auth';
 import IconButton from '@mui/material/IconButton';
 
 function SongCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [draggedTo, setDraggedTo] = useState(0);
     const { song, index } = props;
+
+    //own code
+    const { auth } = useContext(AuthContext);
 
     function handleDragStart(event) {
         event.dataTransfer.setData("song", index);
@@ -67,7 +70,9 @@ function SongCard(props) {
                 href={"https://www.youtube.com/watch?v=" + song.youTubeId}>
                 {song.title} by {song.artist}
             </a>
-            <IconButton onClick={handleRemoveSong} aria-label='delete' style={{float:'right'}}>
+            <IconButton onClick={handleRemoveSong} aria-label='delete' style={{float:'right'}}
+            disabled={auth.loginAsGuest||store.currentList.authorName!=auth.user.firstName+' '+auth.user.lastName}
+            >
                 <DeleteIcon style={{ fontSize: '48pt'}} />
             </IconButton>
         </div>

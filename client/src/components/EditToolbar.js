@@ -130,7 +130,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canPublish() || loginAsGuest}
+                disabled={!store.canPublish() || loginAsGuest||store.currentList.authorName!=auth.user.firstName+' '+auth.user.lastName}
                 id='publish-list-button'
                 onClick={handlePublishList}
                 variant="contained">
@@ -138,7 +138,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canAddNewSong() || loginAsGuest}
+                disabled={!store.canAddNewSong() || loginAsGuest||store.currentList.authorName!=auth.user.firstName+' '+auth.user.lastName}
                 id='add-song-button'
                 onClick={handleAddNewSong}
                 variant="contained">
@@ -146,7 +146,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canUndo() || loginAsGuest}
+                disabled={!store.canUndo() || loginAsGuest||store.currentList.authorName!=auth.user.firstName+' '+auth.user.lastName}
                 id='undo-button'
                 onClick={handleUndo}
                 variant="contained">
@@ -154,7 +154,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canRedo() || loginAsGuest}
+                disabled={!store.canRedo() || loginAsGuest||store.currentList.authorName!=auth.user.firstName+' '+auth.user.lastName}
                 id='redo-button'
                 onClick={handleRedo}
                 variant="contained">
@@ -162,7 +162,7 @@ function EditToolbar() {
             </Button>
             <Button
                 color="inherit"
-                disabled={!store.canClose() || loginAsGuest}
+                disabled={!store.canClose()}
                 id='close-button'
                 onClick={handleClose}
                 variant="contained">
