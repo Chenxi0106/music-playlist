@@ -58,13 +58,24 @@ function EditToolbar() {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={sortByName}>Name</MenuItem>
-            <MenuItem onClick={dummyFunction}>Publish Date</MenuItem>
-            <MenuItem onClick={dummyFunction}>Likes</MenuItem>
+            <MenuItem onClick={sortByPublishDate}>Publish Date</MenuItem>
+            <MenuItem onClick={sortByView}>View</MenuItem>
+            <MenuItem onClick={sortByLike}>Likes</MenuItem>
             <MenuItem onClick={dummyFunction}>Dislikes</MenuItem>
         </Menu>
     );
     function sortByName() {
         store.sortByName();
+    }
+    function sortByPublishDate(){
+        store.sortByPublishDate();
+    }
+    function sortByView(){
+        store.sortByView();
+    }
+
+    function sortByLike(){
+        store.sortByLike();
     }
     function dummyFunction(){
 
