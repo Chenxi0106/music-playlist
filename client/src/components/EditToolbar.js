@@ -57,13 +57,17 @@ function EditToolbar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={dummyFunction}>Name</MenuItem>
+            <MenuItem onClick={sortByName}>Name</MenuItem>
             <MenuItem onClick={dummyFunction}>Publish Date</MenuItem>
             <MenuItem onClick={dummyFunction}>Likes</MenuItem>
             <MenuItem onClick={dummyFunction}>Dislikes</MenuItem>
         </Menu>
     );
-    function dummyFunction() {
+    function sortByName() {
+        store.sortByName();
+    }
+    function dummyFunction(){
+
     }
 
 

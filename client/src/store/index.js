@@ -368,7 +368,7 @@ function GlobalStoreContextProvider(props) {
                 if (playlist.upVote.indexOf(authorName) >= 0) {
                     playlist.upVote.splice(playlist.upVote.indexOf(authorName), 1);
                     for (let i = 0; i < store.idNamePairs.length; i++) {
-                        if (store.idNamePairs[i]._id == id) {
+                        if (store.idNamePairs[i]._id === id) {
                             store.idNamePairs[i].upVote.splice(store.idNamePairs[i].upVote.indexOf(authorName), 1);
                             break;
                         }
@@ -377,7 +377,7 @@ function GlobalStoreContextProvider(props) {
                 else {
                     playlist.upVote.push(authorName);
                     for (let i = 0; i < store.idNamePairs.length; i++) {
-                        if (store.idNamePairs[i]._id == id) {
+                        if (store.idNamePairs[i]._id === id) {
                             store.idNamePairs[i].upVote.push(authorName);
                         }
                     }
@@ -406,7 +406,7 @@ function GlobalStoreContextProvider(props) {
                 if (playlist.downVote.indexOf(authorName) >= 0) {
                     playlist.downVote.splice(playlist.downVote.indexOf(authorName), 1);
                     for (let i = 0; i < store.idNamePairs.length; i++) {
-                        if (store.idNamePairs[i]._id == id) {
+                        if (store.idNamePairs[i]._id === id) {
                             store.idNamePairs[i].downVote.splice(store.idNamePairs[i].downVote.indexOf(authorName), 1);
                             break;
                         }
@@ -415,7 +415,7 @@ function GlobalStoreContextProvider(props) {
                 else {
                     playlist.downVote.push(authorName);
                     for (let i = 0; i < store.idNamePairs.length; i++) {
-                        if (store.idNamePairs[i]._id == id) {
+                        if (store.idNamePairs[i]._id === id) {
                             store.idNamePairs[i].downVote.push(authorName);
                         }
                     }
@@ -462,7 +462,7 @@ function GlobalStoreContextProvider(props) {
         while (duplicatedName) {
             let i = 0;
             for (; i < store.idNamePairs.length; i++) {
-                if (store.idNamePairs[i].name == "Untitled" + value) {
+                if (store.idNamePairs[i].name === "Untitled" + value) {
                     value += 1;
                     break;
                 }
@@ -735,7 +735,7 @@ function GlobalStoreContextProvider(props) {
     store.updateCurrentList = function () {
         async function asyncUpdateCurrentList() {
             const response = await api.updatePlaylistById(store.currentList._id, store.currentList);
-            if (store.sessionSelectedList != null && store.currentList._id == store.sessionSelectedList._id) {
+            if (store.sessionSelectedList != null && store.currentList._id === store.sessionSelectedList._id) {
                 store.sessionSelectedList = store.currentList;
             }
             if (response.data.success) {
@@ -781,7 +781,7 @@ function GlobalStoreContextProvider(props) {
         return !store.currentList.publish;
     }
     store.changeSessionState = function (state, list) {
-        if (state == 'Player' && list != null) {
+        if (state === 'Player' && list != null) {
             store.sessionState = state;
             store.sessionSelectedList = list;
             store.sessionSelectedList.view += 1;
@@ -789,7 +789,7 @@ function GlobalStoreContextProvider(props) {
                 const response = await api.updatePlaylistById(store.sessionSelectedList._id, store.sessionSelectedList);
                 if (response.data.success) {
                     for (let i = 0; i < store.idNamePairs.length; i++) {
-                        if (store.idNamePairs[i]._id == store.sessionSelectedList._id) {
+                        if (store.idNamePairs[i]._id === store.sessionSelectedList._id) {
                             store.idNamePairs[i].view += 1;
                             break;
                         }
@@ -845,7 +845,7 @@ function GlobalStoreContextProvider(props) {
         while (duplicatedName) {
             let i = 0;
             for (; i < store.idNamePairs.length; i++) {
-                if (store.idNamePairs[i].name == "COPY" + value + "-" + store.currentList.name) {
+                if (store.idNamePairs[i].name === "COPY" + value + "-" + store.currentList.name) {
                     value += 1;
                     break;
                 }
@@ -860,7 +860,7 @@ function GlobalStoreContextProvider(props) {
             // IF IT'S A VALID LIST THEN LET'S START EDITING IT
             // history.push("/playlist/" + newList._id);
             //if the idNamePair belongs to the user, then add that in
-            if (store.onSearchButton == null) {
+            if (store.onSearchButton === null) {
                 async function asyncLoadIdNamePairs() {
                     const response = await api.getPlaylistPairs();
                     if (response.data.success) {
@@ -908,7 +908,7 @@ function GlobalStoreContextProvider(props) {
     store.isNameDuplicate = function (name) {
         let i = 0;
         for (; i < store.idNamePairs.length; i++) {
-            if (store.idNamePairs[i].name == name) {
+            if (store.idNamePairs[i].name === name) {
                 return true;
             }
         }
@@ -922,7 +922,7 @@ function GlobalStoreContextProvider(props) {
                 let list = response.data.data;
                 let newIdNamePair = [];
                 for (let i = 0; i < list.length; i++) {
-                    if (list[i].publish && list[i].name == text) {
+                    if (list[i].publish && list[i].name === text) {
                         newIdNamePair.push({
                             _id: list[i]._id,
                             name: list[i].name,
@@ -954,7 +954,7 @@ function GlobalStoreContextProvider(props) {
                 let list = response.data.data;
                 let newIdNamePair = [];
                 for (let i = 0; i < list.length; i++) {
-                    if (list[i].publish && list[i].authorName == text) {
+                    if (list[i].publish && list[i].authorName === text) {
                         newIdNamePair.push({
                             _id: list[i]._id,
                             name: list[i].name,
@@ -977,6 +977,23 @@ function GlobalStoreContextProvider(props) {
             }
         }
         asyncsearchByUserName(text);
+    }
+
+    store.sortByName = function(){
+        let pairsArray = store.idNamePairs;
+        pairsArray.sort(
+            (a, b) => {
+                if (a.name === b.name) {
+                  return 0;
+                }
+                return a.name < b.name ? -1 : 1;
+              }
+        );
+        storeReducer({
+            type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+            payload: { list: pairsArray, state: store.onSearchButton }
+        });
+
     }
 
 
