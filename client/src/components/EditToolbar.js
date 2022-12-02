@@ -197,6 +197,7 @@ function EditToolbar() {
         <Stack spacing={2} direction="row" justifyContent="center" >
             <Button
                 color={store.onSearchButton=="SEARCH_BY_CURRENT_LIST"?"primary":"inherit"}
+                disabled={auth.loginAsGuest}
                 onClick={searchByCurrentList}
                 variant="contained">
                 <Home />
