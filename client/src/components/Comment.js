@@ -1,7 +1,7 @@
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import React, { useContext, useEffect } from 'react'
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../store';
 
 export default function Comment(props) {
     const { store } = useContext(GlobalStoreContext);

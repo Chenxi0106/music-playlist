@@ -838,14 +838,23 @@ function GlobalStoreContextProvider(props) {
 
     }
     store.copyCurrentList = async function () {
+            const response0 = await api.getPlaylistPairs();
+            let pairsArray=null;
+            if (response0.data.success) {
+                pairsArray = response0.data.idNamePairs;
+            }
+            else {
+                console.log("API FAILED TO GET THE LIST PAIRS");
+            }
+
         let value = 0;
         // own code
         //find the unique default name
         let duplicatedName = true;
         while (duplicatedName) {
             let i = 0;
-            for (; i < store.idNamePairs.length; i++) {
-                if (store.idNamePairs[i].name == "COPY" + value + "-" + store.currentList.name) {
+            for (; i < pairsArray.length; i++) {
+                if (pairsArray[i].name == "COPY" + value + "-" + store.currentList.name) {
                     value += 1;
                     break;
                 }
@@ -893,16 +902,37 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.searchByCurrentList = function (searchText) {
-        let newIdNamePair = [];
-        for (let i = 0; i < store.idNamePairs.length; i++) {
-            if (store.idNamePairs[i].name.startsWith(searchText)) {
-                newIdNamePair.push(store.idNamePairs[i]);
+        async function asyncLoadIdNamePairs() {
+            const response = await api.getPlaylistPairs();
+            if (response.data.success) {
+                let pairsArray = response.data.idNamePairs;
+                let newIdNamePair = [];
+                for (let i = 0; i < pairsArray.length; i++) {
+                    if (pairsArray[i].name.startsWith(searchText)) {
+                        newIdNamePair.push(pairsArray[i]);
+                    }
+                }
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                    payload: { list: newIdNamePair, state: "SEARCH_BY_CURRENT_LIST" }
+                })
+
+            }
+            else {
+                console.log("API FAILED TO GET THE LIST PAIRS");
             }
         }
-        storeReducer({
-            type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-            payload: { list: newIdNamePair, state: "SEARCH_BY_CURRENT_LIST" }
-        })
+        asyncLoadIdNamePairs();
+        // let newIdNamePair = [];
+        // for (let i = 0; i < store.idNamePairs.length; i++) {
+        //     if (store.idNamePairs[i].name.startsWith(searchText)) {
+        //         newIdNamePair.push(store.idNamePairs[i]);
+        //     }
+        // }
+        // storeReducer({
+        //     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+        //     payload: { list: newIdNamePair, state: "SEARCH_BY_CURRENT_LIST" }
+        // })
     }
 
     store.isNameDuplicate = function (name) {
@@ -979,15 +1009,15 @@ function GlobalStoreContextProvider(props) {
         asyncsearchByUserName(text);
     }
 
-    store.sortByName = function(){
+    store.sortByName = function () {
         let pairsArray = store.idNamePairs;
         pairsArray.sort(
             (a, b) => {
                 if (a.name == b.name) {
-                  return 0;
+                    return 0;
                 }
                 return a.name < b.name ? -1 : 1;
-              }
+            }
         );
         storeReducer({
             type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
@@ -995,15 +1025,15 @@ function GlobalStoreContextProvider(props) {
         });
 
     }
-    store.sortByPublishDate = function(){
+    store.sortByPublishDate = function () {
         let pairsArray = store.idNamePairs;
         pairsArray.sort(
             (a, b) => {
                 if (a.createTime == b.createTime) {
-                  return 0;
+                    return 0;
                 }
                 return a.createTime < b.createTime ? -1 : 1;
-              }
+            }
         );
         storeReducer({
             type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
@@ -1012,15 +1042,15 @@ function GlobalStoreContextProvider(props) {
 
     }
 
-    store.sortByView = function(){
+    store.sortByView = function () {
         let pairsArray = store.idNamePairs;
         pairsArray.sort(
             (a, b) => {
                 if (a.view == b.view) {
-                  return 0;
+                    return 0;
                 }
                 return a.view < b.view ? 1 : -1;
-              }
+            }
         );
         storeReducer({
             type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
@@ -1028,15 +1058,15 @@ function GlobalStoreContextProvider(props) {
         });
 
     }
-    store.sortByLike = function(){
+    store.sortByLike = function () {
         let pairsArray = store.idNamePairs;
         pairsArray.sort(
             (a, b) => {
                 if (a.upVote == b.upVote) {
-                  return 0;
+                    return 0;
                 }
                 return a.upVote < b.upVote ? 1 : -1;
-              }
+            }
         );
         storeReducer({
             type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
@@ -1045,15 +1075,15 @@ function GlobalStoreContextProvider(props) {
 
     }
 
-    store.sortByDisLike = function(){
+    store.sortByDisLike = function () {
         let pairsArray = store.idNamePairs;
         pairsArray.sort(
             (a, b) => {
                 if (a.downVote == b.downVote) {
-                  return 0;
+                    return 0;
                 }
                 return a.downVote < b.downVote ? 1 : -1;
-              }
+            }
         );
         storeReducer({
             type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
